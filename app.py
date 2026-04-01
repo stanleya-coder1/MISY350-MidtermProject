@@ -21,7 +21,7 @@ if "page" not in st.session_state:
 users = [
      {
     "id": "1",
-    "email": "admin@school.edu",
+    "email": "admin@event.edu",
     "full_name": "System Admin",
     "password": "123ssag@43AE",
     "role": "Admin",
@@ -47,12 +47,8 @@ if st.session_state["role"] == "Admin":
 
 #login 
 else:
-
-
     st.title("Event Manager App")
 
-
-    #login
     st.subheader("Log In")
     with st.container(border=True):
         email_input = st.text_input("Email", key="login_email")
@@ -60,8 +56,7 @@ else:
         
         if st.button("Log In", type="secondary", use_container_width=True):
             with st.spinner("Logging in..."):
-                time.sleep(2) # Fake backend delay
-                
+                time.sleep(2) 
                 # Find user
                 found_user = None
                 for user in users:
@@ -80,3 +75,41 @@ else:
                     st.rerun()
                 else:
                     st.error("Invalid credentials")
+
+    # --- REGISTRATION ---
+    st.subheader("New Admin Account")
+    with st.container(border=True):
+        new_email = st.text_input("Email Address", key="reg_email")
+        new_password = st.text_input("Password", type="password", key="reg_password")
+        
+        if st.button("Create Account", type="secondary", use_container_width=True):
+            with st.spinner("Creating account..."):
+                time.sleep(2) # Fake backend delay
+                # ... (Assume validation logic here) ...
+                users.append({
+                    "id": str(uuid.uuid4()),
+                    "email": new_email,
+                    "password": new_password,
+                    "role": "Admin"
+                })
+                with open(json_path, "w") as f:
+                    json.dump(users, f, indent=4)
+                st.success("Account created!")
+                st.rerun()
+
+    st.write("---")
+    st.dataframe(users)
+
+    #i dont know if this is useful
+
+    with st.sidebar:
+        st.markdown("Sidebar")
+        if st.session_state["logged_in"] == True:
+            user = st.session_state["user"]
+            st.markdown(f"Logged User Email: {user['email']}")
+
+
+json_file = Path("event.json")
+if json_file.exists():
+    with open(json_file, "r") as f:
+        event = json.load(f)
