@@ -1,4 +1,20 @@
 [
     {
+<<<<<<< HEAD
      }
+=======
+        "id": "1",
+        "email": "admin@event.edu",
+        "full_name": "System Admin",
+        "password": "123ssag@43AE",
+        "role": "Admin",
+        "registered_at": "..."
+    },
+    {
+        "id": "8e7a0d9e-e70a-419a-a708-8ef64dceca72",
+        "email": "admin@admin.edu",
+        "password": "admin",
+        "role": "Admin"
+    }
+>>>>>>> 29f5433fa6c412251cf028f1014c8beff74932da
 ]
