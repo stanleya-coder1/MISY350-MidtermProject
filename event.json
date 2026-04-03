@@ -8,10 +8,9 @@
         "registered_at": "..."
     },
     {
-        "id": "77a8c75f-f0e6-4cef-b703-a62c15c1e8e7",
-        "email": "",
-        "password": "",
+        "id": "8e7a0d9e-e70a-419a-a708-8ef64dceca72",
+        "email": "admin@admin.edu",
+        "password": "admin",
         "role": "Admin"
     }
 ]
-

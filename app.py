@@ -77,7 +77,7 @@ if not st.session_state["logged_in"]:
                 # Find user
                 found_user = None
                 for user in users:
-                    if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == password_input:
+                    if user["email"].strip().lower() == text_input.strip().lower() and user["password"] == password_input:
                         found_user = user
                         break
                 
@@ -122,8 +122,8 @@ else:
 
     st.subheader("Log In")
     with st.container(border=True):
-        email_input = st.text_input("Email", key="login_email")
-        password_input = st.text_input("Password", type="password", key="login_password")
+        email_input = st.text_input("Email", key="login_email2")
+        password_input = st.text_input("Password", type="password", key="login_password2")
         
         if st.button("Log In", type="secondary", use_container_width=True):
             with st.spinner("Logging in..."):
@@ -204,11 +204,11 @@ else:
             selected_event = event
 
     if selected_event:
-        st.write(f"Event: {selected_event["name"]}")
-        st.write(f" Date/Time: {selected_event["date"]} at {selected_event["time"]}")
-        st.write(f"Location:{selected_event["location"]}")
-        st.write(f"{selected_event["description"]}")
-        st.write(f"Tickets Left: {selected_event["tickets"] - selected_event["reserved"]}")
+        st.write(f"Event: {selected_event['name']}")
+        st.write(f" Date/Time: {selected_event['date']} at {selected_event['time']}")
+        st.write(f"Location:{selected_event['location']}")
+        st.write(f"{selected_event['description']}")
+        st.write(f"Tickets Left: {selected_event['tickets'] - selected_event['reserved']}")
 
         if st.button("Reserve Ticket"):
             if selected_event["reserved"] < selected_event["tickets"]:
