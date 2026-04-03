@@ -1,4 +1,23 @@
 [
     {
-     }
+        "id": "1",
+        "email": "admin@event.edu",
+        "full_name": "System Admin",
+        "password": "123ssag@43AE",
+        "role": "Admin"
+    },
+    {
+        "id": "7205be58-da15-499f-bd44-429d762f3b66",
+        "email": "attendee@udel.edu",
+        "full_name": "New Attendee",
+        "password": "asdrstcjnkjnniubinijun",
+        "role": "Attendee"
+    },
+    {
+        "id": "69a1390d-06b2-4ede-92b8-5c11cb47bcae",
+        "email": "admin2@udel.edu",
+        "full_name": "Admin 2",
+        "password": "rehfguewyfgcvidfukbvlw",
+        "role": "Admin"
+    }
 ]

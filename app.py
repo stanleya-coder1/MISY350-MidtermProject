@@ -70,12 +70,10 @@ if users_file.exists():
    with open(users_file, "r") as f:
         user = json.load(f)
 
-<<<<<<< HEAD
 events = json.load(open(events.file)) 
 if events_file.exists():
    with open(events.file, "r") as f:
      event = json.load(f)
-=======
     tab1, tab2 = st.tabs(["Login", "Registration"])
     with tab1:
         st.subheader("Login")
@@ -119,7 +117,6 @@ if events_file.exists():
             st.success("Account created!")
             st.rerun()
 
->>>>>>> 29f5433fa6c412251cf028f1014c8beff74932da
 
 if st.session_state["role"] == "Admin":
     if st.session_state["page"] == "home":
@@ -131,7 +128,6 @@ if st.session_state["role"] == "Admin":
     tab1, tab2, tab3 = st.tabs(["Create Event", "View Event", "Update Event"])
 
 
-<<<<<<< HEAD
 #login 
 else:
     st.title("Event Manager App")
@@ -186,8 +182,6 @@ else:
                     json.dump(users, f, indent=4)
                 st.success("Account created!")
                 st.rerun()
-=======
->>>>>>> 29f5433fa6c412251cf028f1014c8beff74932da
 
     st.write("---")
 #REMOVE THIS BEFORE SUBMISSION
@@ -201,7 +195,6 @@ else:
             st.markdown(f"Logged User Email: {user['email']}")
 
 
-<<<<<<< HEAD
 
            
 
@@ -213,21 +206,6 @@ if st.session_state["role"] == "Attendee":
             st.rerun()
 
  
-=======
-json_file = Path("users.json")
-if json_file.exists():
-    with open(json_file, "r") as f:
-        event = json.load(f)
-           
-
-# ATTENDEE PAGE
-if st.session_state["role"]=="Attendee":
-    if st.session_state["page"]=="home":
-        st.markdown["Welcome! View upcoming events"]
-        if st.button("Event Portal", key="view_events_btn", type="primary", use_container_width=True):
-            st.session_state["page"]="Attendee"
-            st.rerun()
->>>>>>> 29f5433fa6c412251cf028f1014c8beff74932da
 else:
     st.title("See Events")
 
@@ -244,19 +222,11 @@ else:
             selected_event = event
 
     if selected_event:
-<<<<<<< HEAD
         st.markdown(f"Event: {selected_event["name"]}")
         st.write(f" Date/Time: {selected_event["date"]} at {selected_event["time"]}")
         st.write(f"Location:{selected_event["location"]}")
         st.write(f"{selected_event["description"]}")
         st.write(f"Tickets Left: {selected_event["tickets"] - selected_event["reserved"]}")
-=======
-        st.write(f"Event: {selected_event['name']}")
-        st.write(f" Date/Time: {selected_event['date']} at {selected_event['time']}")
-        st.write(f"Location:{selected_event['location']}")
-        st.write(f"{selected_event['description']}")
-        st.write(f"Tickets Left: {selected_event['tickets'] - selected_event['reserved']}")
->>>>>>> 29f5433fa6c412251cf028f1014c8beff74932da
 
         if st.button("Reserve Ticket"):
             if selected_event["reserved"] < selected_event["tickets"]:
