@@ -1,17 +1,4 @@
 [
     {
-        "id": "1",
-        "email": "admin@event.edu",
-        "full_name": "System Admin",
-        "password": "123ssag@43AE",
-        "role": "Admin",
-        "registered_at": "..."
-    },
-    {
-        "id": "77a8c75f-f0e6-4cef-b703-a62c15c1e8e7",
-        "email": "",
-        "password": "",
-        "role": "Admin"
-    }
+     }
 ]
-

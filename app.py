@@ -62,49 +62,18 @@ if json_path.exists():
         event = json.load(f)
 
 
-st.set_page_config(page_title="Home Page")
+users_file = Path("users.json")
+events_file = Path("events.json")
 
-if not st.session_state["logged_in"]:
-    st.title("Home Page")
+users = json.load(open(users.file)) 
+if users_file.exists():
+   with open(users_file, "r") as f:
+        user = json.load(f)
 
-    st.subheader("Login")
-    email = st.text_input("Email", key="login_email")
-    password = st.text_input("Password", type="password", key="login_password")
-        
-    if st.button("Login"):
-        with st.spinner("Logging in..."):
-                time.sleep(2) 
-                # Find user
-                found_user = None
-                for user in users:
-                    if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == password_input:
-                        found_user = user
-                        break
-                
-                if found_user:
-                    st.success(f"Welcome back, {found_user['email']}!")
-                    st.session_state["logged_in"] = True
-                    st.session_state["user"] = found_user
-                    st.session_state["role"] = found_user["role"]
-                    st.session_state["page"] = "home"
-
-                    time.sleep(2)
-                    st.rerun()
-                else:
-                    st.error("Invalid credentials")
-
-    st.subheader("Register")
-    new_email = st.text_input("New Email")
-    new_pass = st.text_input("New Password", type="password")
-
-    if st.button("Create Account"):
-        users.append({
-            "id": str(uuid.uuid4()),
-            "email": new_email,
-            "password": new_pass,
-            "role": "Attendee"
-        })
-        st.success("Account created")
+events = json.load(open(events.file)) 
+if events_file.exists():
+   with open(events.file, "r") as f:
+     event = json.load(f)
 
 if st.session_state["role"] == "Admin":
     if st.session_state["page"] == "home":
@@ -146,6 +115,9 @@ else:
                     st.rerun()
                 else:
                     st.error("Invalid credentials")
+        
+
+
 
     # --- REGISTRATION ---
     st.subheader("New Admin Account")
@@ -180,14 +152,17 @@ else:
             st.markdown(f"Logged User Email: {user['email']}")
 
 
-json_file = Path("event.json")
-if json_file.exists():
-    with open(json_file, "r") as f:
-        event = json.load(f)
+
            
 
-# ATTENDEE PAGE
+if st.session_state["role"] == "Attendee":
+    if st.session_state["page"] == "home":
+        st.markdown("welcome! View Upcoming Events!")
+        if st.button("Event Portal", key="view_events_btn", type="primary", use_container_width=True):
+            st.session_state["page"] = "Attendee"
+            st.rerun()
 
+ 
 else:
     st.title("See Events")
 
@@ -204,7 +179,7 @@ else:
             selected_event = event
 
     if selected_event:
-        st.write(f"Event: {selected_event["name"]}")
+        st.markdown(f"Event: {selected_event["name"]}")
         st.write(f" Date/Time: {selected_event["date"]} at {selected_event["time"]}")
         st.write(f"Location:{selected_event["location"]}")
         st.write(f"{selected_event["description"]}")
@@ -216,3 +191,5 @@ else:
                 st.success("Ticket reserved!")
             else:
                 st.error("Sold out")
+
+                
