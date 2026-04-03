@@ -11,6 +11,8 @@ import time
 st.set_page_config(page_title="Event Manager", layout="centered")
 st.title("Login")
 
+
+
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
 if "user" not in st.session_state:
@@ -54,39 +56,11 @@ events = [
   }
 ]
 
-
-users_file = Path("users.json")
-events_file = Path("events.json")
-
-users = json.load(open(users_file)) 
-if users_file.exists():
-    with open(users_file, "r") as f:
-        user = json.load(f)
-
-events = json.load(open(events_file)) 
-if events_file.exists():
-    with open(events_file, "r") as f:
+json_path = Path("event.json")
+if json_path.exists(): 
+    with open(json_path, "r") as f:
         event = json.load(f)
 
-#not sure needed
-def save_users():
-    json.dump(users, open(users_file, "w"), indent=4)
-
-def save_events():
-    json.dump(events, open(events_file, "w"), indent=4)
-
-#sidebar
-if st.session_state["logged_in"]:
-    with st.sidebar:
-        st.write(f"Logged in as: {st.session_state.user['email']}")
-        if st.button("Logout"):
-            st.session_state["logged_in"] = False
-            st.session_state["user"] = None
-            st.session_state["role"] = None
-            st.rerun()
-
-
-# HOME Page
 
 st.set_page_config(page_title="Home Page")
 
@@ -94,19 +68,32 @@ if not st.session_state["logged_in"]:
     st.title("Home Page")
 
     st.subheader("Login")
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
-
+    email = st.text_input("Email", key="login_email")
+    password = st.text_input("Password", type="password", key="login_password")
+        
     if st.button("Login"):
-        for u in users:
-            if u["email"] == email and u["password"] == password:
-                st.session_state["logged_in"] = True
-                st.session_state["user"] = u
-                st.session_state["role"] = u["role"]
-                st.rerun()
-        st.error("Incorrect login")
+        with st.spinner("Logging in..."):
+                time.sleep(2) 
+                # Find user
+                found_user = None
+                for user in users:
+                    if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == password_input:
+                        found_user = user
+                        break
+                
+                if found_user:
+                    st.success(f"Welcome back, {found_user['email']}!")
+                    st.session_state["logged_in"] = True
+                    st.session_state["user"] = found_user
+                    st.session_state["role"] = found_user["role"]
+                    st.session_state["page"] = "home"
 
-    st.subheader("Register (Attendee)")
+                    time.sleep(2)
+                    st.rerun()
+                else:
+                    st.error("Invalid credentials")
+
+    st.subheader("Register")
     new_email = st.text_input("New Email")
     new_pass = st.text_input("New Password", type="password")
 
@@ -117,61 +104,86 @@ if not st.session_state["logged_in"]:
             "password": new_pass,
             "role": "Attendee"
         })
-        save_users()
         st.success("Account created")
 
+if st.session_state["role"] == "Admin":
+    if st.session_state["page"] == "home":
+        st.markdown("welcome! This is the Admin Dashboard")
+        if st.button("Dashboard", key="dashboard_view_btn", type="primary", use_container_width=True):
+            st.session_state["page"] = "dashboard"
+            st.rerun()
 
-# ADMIN PAGE (CRUD- Create Edit Delete)
-elif st.session_state["role"] == "Admin":
-    st.title("Admin Event Management")
+    tab1, tab2, tab3 = st.tabs(["Create Event", "View Event", "Update Event"])
 
-    tab1, tab2 = st.tabs(["View and Edit Events", "Create Event"])
 
-    # view events and edit
-    with tab1:
-        for e in events:
-            st.markdown(f"### {e['name']}")
-            e["name"] = st.text_input("Name", e["name"], key=f"name_{e['id']}")
-            e["date"] = st.text_input("Date", e["date"], key=f"date_{e['id']}")
-            e["time"] = st.text_input("Time", e["time"], key=f"time_{e['id']}")
-            e["location"] = st.text_input("Location", e["location"], key=f"loc_{e['id']}")
-            e["description"] = st.text_area("Description", e["description"], key=f"desc_{e['id']}")
+#login 
+else:
+    st.title("Event Manager App")
 
-            st.write(f"Tickets: {e['reserved']}/{e['tickets']}")
+    st.subheader("Log In")
+    with st.container(border=True):
+        email_input = st.text_input("Email", key="login_email")
+        password_input = st.text_input("Password", type="password", key="login_password")
+        
+        if st.button("Log In", type="secondary", use_container_width=True):
+            with st.spinner("Logging in..."):
+                time.sleep(2) 
+                # Find user
+                found_user = None
+                for user in users:
+                    if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == password_input:
+                        found_user = user
+                        break
+                
+                if found_user:
+                    st.success(f"Welcome back, {found_user['email']}!")
+                    st.session_state["logged_in"] = True
+                    st.session_state["user"] = found_user
+                    st.session_state["role"] = found_user["role"]
+                    st.session_state["page"] = "home"
 
-            if st.button(f"Save {e['id']}"):
-                save_events()
-                st.success("Updated!")
+                    time.sleep(2)
+                    st.rerun()
+                else:
+                    st.error("Invalid credentials")
 
-            if st.button(f"Delete {e['id']}"):
-                events.remove(e)
-                save_events()
+    # --- REGISTRATION ---
+    st.subheader("New Admin Account")
+    with st.container(border=True):
+        new_email = st.text_input("Email Address", key="reg_email")
+        new_password = st.text_input("Password", type="password", key="reg_password")
+        
+        if st.button("Create Account", type="secondary", use_container_width=True):
+            with st.spinner("Creating account..."):
+                time.sleep(2) # Fake backend delay
+                # ... (Assume validation logic here) ...
+                users.append({
+                    "id": str(uuid.uuid4()),
+                    "email": new_email,
+                    "password": new_password,
+                    "role": "Admin"
+                })
+                with open(json_path, "w") as f:
+                    json.dump(users, f, indent=4)
+                st.success("Account created!")
                 st.rerun()
 
-    # create event
-    with tab2:
-        st.subheader("Create New Event")
+    st.write("---")
+    st.dataframe(users)
 
-        name = st.text_input("Event Name")
-        date = st.text_input("Date")
-        time = st.text_input("Time")
-        location = st.text_input("Location")
-        description = st.text_area("Description")
-        tickets = st.number_input("Tickets", min_value=1)
+    #i dont know if this is useful
 
-        if st.button("Create Event"):
-            events.append({
-                "id": str(uuid.uuid4()),
-                "name": name,
-                "date": date,
-                "time": time,
-                "location": location,
-                "description": description,
-                "tickets": tickets,
-                "reserved": 0
-            })
-            save_events()
-            st.success("Event created")
+    with st.sidebar:
+        st.markdown("Sidebar")
+        if st.session_state["logged_in"] == True:
+            user = st.session_state["user"]
+            st.markdown(f"Logged User Email: {user['email']}")
+
+
+json_file = Path("event.json")
+if json_file.exists():
+    with open(json_file, "r") as f:
+        event = json.load(f)
            
 
 # ATTENDEE PAGE
@@ -192,7 +204,7 @@ else:
             selected_event = event
 
     if selected_event:
-        st.markdown(f"### {selected_event["name"]}")
+        st.write(f"Event: {selected_event["name"]}")
         st.write(f" Date/Time: {selected_event["date"]} at {selected_event["time"]}")
         st.write(f"Location:{selected_event["location"]}")
         st.write(f"{selected_event["description"]}")
@@ -201,7 +213,6 @@ else:
         if st.button("Reserve Ticket"):
             if selected_event["reserved"] < selected_event["tickets"]:
                 selected_event["reserved"] += 1
-                save_events()
                 st.success("Ticket reserved!")
             else:
                 st.error("Sold out")
