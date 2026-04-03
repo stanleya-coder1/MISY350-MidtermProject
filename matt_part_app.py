@@ -141,12 +141,7 @@ if json_file.exists():
            
 
 # ATTENDEE PAGE
-if st.session_state["role"]=="Attendee":
-    if st.session_state["page"]=="home":
-        st.markdown["Welcome! View upcoming events"]
-        if st.button("Event Portal", key="view_events_btn", type="primary", use_container_width=True):
-            st.session_state["page"]="Attendee"
-            st.rerun()
+
 else:
     st.title("See Events")
 
