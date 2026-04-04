@@ -74,7 +74,6 @@ else:
   }
 ]
 
-st.set_page_config(page_title="Home Page")
 
 if not st.session_state["logged_in"]:
     st.title("Log in")
@@ -128,14 +127,16 @@ if not st.session_state["logged_in"]:
 
 
 
+
+
+
 if st.session_state["role"] == "Attendee":
     if st.session_state["page"] == "home":
         st.markdown("welcome! View Upcoming Events!")
         if st.button("Event Portal", key="view_events_btn", type="primary", use_container_width=True):
             st.session_state["page"] = "attendee_portal"
             st.rerun()
-
-       
+ 
     if st.session_state["page"] == "attendee_portal":
 
         st.title("Find Events")
@@ -191,30 +192,31 @@ if st.session_state["role"] == "Admin":
     tab1, tab2, tab3 = st.tabs(["Create Event", "View Events", "Update Event"])
     with tab1:
         st.subheader("Create New Event")
-        name = st.text_input("Event Name")
-        date = st.text_input("Date")
-        time_input= st.text_input("Time")
-        location = st.text_input("Location")
-        description = st.text_area("Description")
-        tickets = st.number_input("Tickets", min_value=1)
+        name_input = st.text_input("Event Name", key="create_name")
+        date_input = st.text_input("Date", key="create_date")
+        time_input= st.text_input("Time", key="create_time")
+        location_input = st.text_input("Location", key="create_location")
+        description_input = st.text_area("Description", key="create_description")
+        tickets_input = st.number_input("Tickets", min_value=1, key="create_ticket")
 
         if st.button("Create Event"):
             events.append({
                 "id": str(uuid.uuid4()),
-                "name": name,
-                "date": date,
-                "time": time,
-                "location": location,
-                "description": description,
-                "tickets": tickets,
+                "name": name_input,
+                "date": date_input,
+                "time": time_input,
+                "location": location_input,
+                "description": description_input,
+                "tickets": tickets_input,
                 "reserved": 0
             })
             with open(events_file, "w") as f:
                json.dump(events, f, indent=4)
+               with open(users_file, "r") as f:
+                    users = json.load(f)
             st.success("Event created")
             st.rerun()
             
-
 
 
 

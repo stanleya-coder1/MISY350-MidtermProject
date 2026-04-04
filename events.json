@@ -18,5 +18,15 @@
         "description": "Live music and entertainment. Pop and Rock bands.",
         "tickets": 125,
         "reserved": 53
+    },
+    {
+        "id": "6fedd138-275b-460a-832e-b8849a29e5a4",
+        "name": "New Event",
+        "date": "4-2-2026",
+        "time": "5pm",
+        "location": "Seatle",
+        "description": "this is a new event",
+        "tickets": 540,
+        "reserved": 0
     }
 ]
