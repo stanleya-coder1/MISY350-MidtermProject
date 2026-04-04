@@ -11,12 +11,12 @@
     },
     {
         "id": "2",
-        "name": "Music Festival",
-        "date": "6-1-2026",
+        "name": "Music Festival- Oceans Calling",
+        "date": "6-2-2026",
         "time": "8:00 PM",
         "location": "Philadelphia",
-        "description": "Live music and entertainment.",
-        "tickets": 100,
+        "description": "Live music and entertainment. Pop and Rock bands.",
+        "tickets": 125,
         "reserved": 53
     }
 ]

@@ -215,33 +215,13 @@ if st.session_state["role"] == "Admin":
             st.rerun()
             
 
-    with tab2:
-        st.subheader("All Events")
 
-        event_names = []
-        for event in events:
-            event_names.append(event["name"])
-
-        admin_selected_event = st.selectbox("Select Event", event_names, key ="admin_dash_events")
-
-        admin_selected_event = None
-        for event in events:
-            if event["name"] == admin_selected_event:
-                admin_selected_event = event
-
-        if admin_selected_event:
-            st.markdown(f"Event: {admin_selected_event["name"]}")
-            st.write(f" Date/Time: {admin_selected_event["date"]} at {selected_event["time"]}")
-            st.write(f"Location:{admin_selected_event["location"]}")
-            st.write(f"{admin_selected_event["description"]}")
-            st.wriet(f"Number of Tickets: {admin_selected_event["tickets"]}")
-            st.write(f"Available Tickets: {admin_selected_event["tickets"] - selected_event["reserved"]}")
 
 
 
 
     with tab3:
-        st.subheader("Update Event")
+        st.subheader("View and Update Event")
 
         event_names = [event["name"] for event in events]
         selected_name = st.selectbox("Select Event", event_names)
