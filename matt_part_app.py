@@ -132,7 +132,8 @@ if not st.session_state["logged_in"]:
 
 if st.session_state["role"] == "Attendee":
     if st.session_state["page"] == "home":
-        st.markdown("welcome! View Upcoming Events!")
+        st.title("Welcome to the Event Portal")
+        st.write("Browse and reserve tickets for upcoming events.")
         if st.button("Event Portal", key="view_events_btn", type="primary", use_container_width=True):
             st.session_state["page"] = "attendee_portal"
             st.rerun()
@@ -178,7 +179,8 @@ if st.session_state["role"] == "Attendee":
 
 if st.session_state["role"] == "Admin":
     if st.session_state["page"] == "home":
-        st.markdown("welcome! This is the Admin Dashboard")
+        st.title("Admin Dashboard")
+        st.write("Create and manage events below.")
         if st.button("Dashboard", key="dashboard_view_btn", type="primary", use_container_width=True):
             st.session_state["page"] = "dashboard"
             st.rerun()
