@@ -40,5 +40,33 @@
         "full_name": "matt@email.com",
         "password": "matt",
         "role": "Attendee"
+    },
+    {
+        "id": "4648d587-cadc-4adb-b34e-bdd108cf4586",
+        "email": "matt@email.com",
+        "full_name": "matt",
+        "password": "matt",
+        "role": "Attendee"
+    },
+    {
+        "id": "2a974a5f-9073-467b-bac9-4f1a0a3b1491",
+        "email": "matt@email.com",
+        "full_name": "matt",
+        "password": "matt",
+        "role": "Admin"
+    },
+    {
+        "id": "af829f08-bd2a-4555-8891-88c1008e516b",
+        "email": "matt@email.com",
+        "full_name": "matt",
+        "password": "matt",
+        "role": "Attendee"
+    },
+    {
+        "id": "2be7e323-68c6-471b-b21f-c955ab1d31e7",
+        "email": "matt@email.com",
+        "full_name": "matt",
+        "password": "matt",
+        "role": "Admin"
     }
 ]

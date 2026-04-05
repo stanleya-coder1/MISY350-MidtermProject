@@ -258,3 +258,11 @@ if st.session_state["role"] == "Admin":
 
                 st.success("Event updated!")
                 st.rerun()
+    if st.button("Log out", type="primary", use_container_width=True):
+            with st.spinner("logging out..."):
+                st.session_state["logged_in"] = False
+                st.session_state["user"] = False
+                st.session_state["role"] = False
+                st.session_state["page"] = "login"
+                time.sleep(4) 
+                st.rerun()

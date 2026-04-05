@@ -188,6 +188,7 @@ if st.session_state["role"] == "Admin":
                 events = json.load(f)
         else:
             events = []
+        
 
     tab1, tab2, tab3 = st.tabs(["Create Event", "View Events", "Update Event"])
     with tab1:
@@ -257,4 +258,13 @@ if st.session_state["role"] == "Admin":
                     json.dump(events, f, indent=4)
 
                 st.success("Event updated!")
+                st.rerun()
+
+    if st.button("Log out", type="primary", use_container_width=True):
+            with st.spinner("logging out..."):
+                st.session_state["logged_in"] = False
+                st.session_state["user"] = False
+                st.session_state["role"] = False
+                st.session_state["page"] = "login"
+                time.sleep(4) 
                 st.rerun()
