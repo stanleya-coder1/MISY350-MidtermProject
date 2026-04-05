@@ -9,7 +9,7 @@ import time
 
 
 st.set_page_config(page_title="Event Manager", layout="centered")
-st.title("Home Page")
+
 
 
 
