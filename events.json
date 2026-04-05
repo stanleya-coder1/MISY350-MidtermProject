@@ -28,5 +28,15 @@
         "description": "this is a new event",
         "tickets": 540,
         "reserved": 0
+    },
+    {
+        "id": "9f5d1cb4-32ad-4cdb-9163-1fb96cf4b07f",
+        "name": "Birthday Party",
+        "date": "4-27-2026",
+        "time": "5pm",
+        "location": "Newark, DE",
+        "description": "Celebrating 22 years.",
+        "tickets": 15,
+        "reserved": 0
     }
 ]
