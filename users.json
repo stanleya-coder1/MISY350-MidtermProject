@@ -19,5 +19,26 @@
         "full_name": "Admin 2",
         "password": "rehfguewyfgcvidfukbvlw",
         "role": "Admin"
+    },
+    {
+        "id": "293cb691-e08d-4064-b9c6-21e0a668ae07",
+        "email": "matt@email.com",
+        "full_name": "matt m",
+        "password": "matt",
+        "role": "Admin"
+    },
+    {
+        "id": "d0fd0d1c-b033-4a27-88dd-4f5153f76e7e",
+        "email": "admin@admin.com",
+        "full_name": "admin",
+        "password": "admin",
+        "role": "Attendee"
+    },
+    {
+        "id": "f1d82089-2a65-4a9e-a85d-252602eb4bdf",
+        "email": "matt@email.com",
+        "full_name": "matt@email.com",
+        "password": "matt",
+        "role": "Attendee"
     }
 ]
