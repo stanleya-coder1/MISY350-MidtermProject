@@ -189,7 +189,7 @@ if st.session_state["role"] == "Admin":
         else:
             events = []
 
-    tab1, tab2, tab3 = st.tabs(["Create Event", "View Events", "Update Event"])
+    tab1, tab2= st.tabs(["Create Event", "Update Event"])
     with tab1:
         st.subheader("Create New Event")
         name_input = st.text_input("Event Name", key="create_name")
@@ -222,7 +222,7 @@ if st.session_state["role"] == "Admin":
 
 
 
-    with tab3:
+    with tab2:
         st.subheader("View and Update Event")
 
         event_names = [event["name"] for event in events]
