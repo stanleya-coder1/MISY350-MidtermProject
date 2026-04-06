@@ -85,24 +85,27 @@ if not st.session_state["logged_in"]:
         pass_input = st.text_input("Password", type="password", key="login_password")
             
         if st.button("Login"):
-            with st.spinner("Logging in..."):
-                time.sleep(2)
-                found_user = None
-                for user in users:
-                    if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == pass_input:
-                        found_user = user
-                        break
-                    
-                if found_user:
-                    st.success(f"Welcome back, {found_user['email']}!")
-                    st.session_state["logged_in"] = True
-                    st.session_state["user"] = found_user
-                    st.session_state["role"] = found_user["role"]
-                    st.session_state["page"] = "home"
+            if not email_input and pass_input:
+                st.warning("Please provide information")
+            else:
+                with st.spinner("Logging in..."):
                     time.sleep(2)
-                    st.rerun()
-                else:
-                    st.error("Invalid credentials")
+                    found_user = None
+                    for user in users:
+                        if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == pass_input:
+                            found_user = user
+                            break
+                        
+                    if found_user:
+                        st.success(f"Welcome back, {found_user['email']}!")
+                        st.session_state["logged_in"] = True
+                        st.session_state["user"] = found_user
+                        st.session_state["role"] = found_user["role"]
+                        st.session_state["page"] = "home"
+                        time.sleep(2)
+                        st.rerun()
+                    else:
+                        st.error("Invalid credentials")
 
     with tab2:
         st.subheader("Register")

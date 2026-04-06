@@ -85,24 +85,27 @@ if not st.session_state["logged_in"]:
         pass_input = st.text_input("Password", type="password", key="login_password")
             
         if st.button("Login"):
-            with st.spinner("Logging in..."):
-                time.sleep(2)
-                found_user = None
-                for user in users:
-                    if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == pass_input:
-                        found_user = user
-                        break
-                    
-                if found_user:
-                    st.success(f"Welcome back, {found_user['email']}!")
-                    st.session_state["logged_in"] = True
-                    st.session_state["user"] = found_user
-                    st.session_state["role"] = found_user["role"]
-                    st.session_state["page"] = "home"
+            if not email_input and pass_input:
+                st.warning("Please provide information")
+            else:
+                with st.spinner("Logging in..."):
                     time.sleep(2)
-                    st.rerun()
-                else:
-                    st.error("Invalid credentials")
+                    found_user = None
+                    for user in users:
+                        if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == pass_input:
+                            found_user = user
+                            break
+                        
+                    if found_user:
+                        st.success(f"Welcome back, {found_user['email']}!")
+                        st.session_state["logged_in"] = True
+                        st.session_state["user"] = found_user
+                        st.session_state["role"] = found_user["role"]
+                        st.session_state["page"] = "home"
+                        time.sleep(2)
+                        st.rerun()
+                    else:
+                        st.error("Invalid credentials")
 
     with tab2:
         st.subheader("Register")
@@ -112,18 +115,21 @@ if not st.session_state["logged_in"]:
         role_input = st.selectbox("Role", ["Attendee", "Admin"], key="reg_role")
 
         if st.button("Create Account"):
-            users.append({
-                "id": str(uuid.uuid4()),
-                "email": email_input,
-                "full_name": name_input,
-                "password": pass_input,
-                "role": role_input
-            })
-            with open(users_file, "w") as f:
-                json.dump(users, f, indent=4)
-                with open(users_file, "r") as f:
-                    users = json.load(f)
-            st.success("Account created!")
+            if not email_input and pass_input and name_input and role_input:
+                st.warning("Please provide information")
+            else:
+                users.append({
+                    "id": str(uuid.uuid4()),
+                    "email": email_input,
+                    "full_name": name_input,
+                    "password": pass_input,
+                    "role": role_input
+                })
+                with open(users_file, "w") as f:
+                    json.dump(users, f, indent=4)
+                    with open(users_file, "r") as f:
+                        users = json.load(f)
+                st.success("Account created!")
 
 
 
@@ -171,9 +177,15 @@ if st.session_state["role"] == "Attendee":
                     st.success("Ticket reserved!")
                 else:
                     st.error("Sold out")
-
-                
-
+    if st.button("Log out", type="primary", use_container_width=True):
+            with st.spinner("logging out..."):
+                st.session_state["logged_in"] = False
+                st.session_state["user"] = False
+                st.session_state["role"] = False
+                st.session_state["page"] = "login"
+                st.success("Logged out successfully")
+                time.sleep(4) 
+                st.rerun()
 
 
 
@@ -190,9 +202,8 @@ if st.session_state["role"] == "Admin":
                 events = json.load(f)
         else:
             events = []
-        
 
-    tab1, tab2, tab3 = st.tabs(["Create Event", "View Events", "Update Event"])
+    tab1, tab2= st.tabs(["Create Event", "Update Event"])
     with tab1:
         st.subheader("Create New Event")
         name_input = st.text_input("Event Name", key="create_name")
@@ -222,10 +233,7 @@ if st.session_state["role"] == "Admin":
             
 
 
-
-
-
-    with tab3:
+    with tab2:
         st.subheader("View and Update Event")
 
         event_names = [event["name"] for event in events]
@@ -261,12 +269,12 @@ if st.session_state["role"] == "Admin":
 
                 st.success("Event updated!")
                 st.rerun()
-
     if st.button("Log out", type="primary", use_container_width=True):
             with st.spinner("logging out..."):
                 st.session_state["logged_in"] = False
                 st.session_state["user"] = False
                 st.session_state["role"] = False
                 st.session_state["page"] = "login"
+                st.success("Logged out successfully!")
                 time.sleep(4) 
                 st.rerun()
