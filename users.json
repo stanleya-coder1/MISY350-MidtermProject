@@ -28,59 +28,17 @@
         "role": "Admin"
     },
     {
-        "id": "d0fd0d1c-b033-4a27-88dd-4f5153f76e7e",
-        "email": "admin@admin.com",
-        "full_name": "admin",
-        "password": "admin",
-        "role": "Attendee"
-    },
-    {
-        "id": "f1d82089-2a65-4a9e-a85d-252602eb4bdf",
-        "email": "matt@email.com",
-        "full_name": "matt@email.com",
-        "password": "matt",
-        "role": "Attendee"
-    },
-    {
-        "id": "4648d587-cadc-4adb-b34e-bdd108cf4586",
-        "email": "matt@email.com",
-        "full_name": "matt",
-        "password": "matt",
-        "role": "Attendee"
-    },
-    {
-        "id": "2a974a5f-9073-467b-bac9-4f1a0a3b1491",
-        "email": "matt@email.com",
-        "full_name": "matt",
-        "password": "matt",
+        "id": "28bcbd20-3cee-4a52-a327-b87290789fc4",
+        "email": "stanleya@udel.edu",
+        "full_name": "Anastasia Stanley",
+        "password": "uewyfgiwrnfvpeotj",
         "role": "Admin"
     },
     {
-        "id": "af829f08-bd2a-4555-8891-88c1008e516b",
-        "email": "matt@email.com",
-        "full_name": "matt",
-        "password": "matt",
-        "role": "Attendee"
-    },
-    {
-        "id": "2be7e323-68c6-471b-b21f-c955ab1d31e7",
-        "email": "matt@email.com",
-        "full_name": "matt",
-        "password": "matt",
-        "role": "Admin"
-    },
-    {
-        "id": "b7bb6719-4ab9-482b-a4fc-f8e6a0c6ea68",
-        "email": "",
-        "full_name": "",
-        "password": "",
-        "role": "Attendee"
-    },
-    {
-        "id": "1dbfddac-488a-4164-a8b6-6c2b5bfe3059",
-        "email": "",
-        "full_name": "",
-        "password": "",
+        "id": "2e7abb70-40cd-468c-9952-166573b54a32",
+        "email": "newemail@udel.edu",
+        "full_name": "UD Student",
+        "password": "wejciwebcec",
         "role": "Attendee"
     }
 ]

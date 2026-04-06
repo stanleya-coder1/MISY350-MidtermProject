@@ -84,7 +84,7 @@ if not st.session_state["logged_in"]:
         email_input = st.text_input("Email", key="login_email")
         pass_input = st.text_input("Password", type="password", key="login_password")
             
-        if st.button("Login"):
+        if st.button("Login", type="primary", use_container_width=True, key="login_bttn"):
             with st.spinner("Logging in..."):
                 time.sleep(2)
                 found_user = None
@@ -111,20 +111,27 @@ if not st.session_state["logged_in"]:
         pass_input = st.text_input("Password", type="password", key="reg_password")
         role_input = st.selectbox("Role", ["Attendee", "Admin"], key="reg_role")
 
-        if st.button("Create Account"):
+        duplicate_email = any(u["email"].lower() == email_input.lower() for u in users)
 
-            users.append({
+        if st.button("Create Account", type="primary", use_container_width=True, key="create_acct"):
+            if not email_input or not name_input or not pass_input:
+                st.error("Fill in all required fields")
+            elif duplicate_email:
+                st.error("There is already an account with this email")
+            else:
+                users.append({
                 "id": str(uuid.uuid4()),
                 "email": email_input,
                 "full_name": name_input,
                 "password": pass_input,
                 "role": role_input
                 })
-            with open(users_file, "w") as f:
-                json.dump(users, f, indent=4)
-                with open(users_file, "r") as f:
-                    users = json.load(f)
-            st.success("Account created!")
+                with open(users_file, "w") as f:
+                    json.dump(users, f, indent=4)
+
+                st.success("Account created!")
+                time.sleep(2)
+                st.rerun()
 
 
 
@@ -134,7 +141,7 @@ if st.session_state["role"] == "Attendee":
     if st.session_state["page"] == "home":
         st.title("Welcome to the Event Portal")
         st.write("Browse and reserve tickets for upcoming events.")
-        if st.button("Event Portal", key="view_events_btn", type="primary", use_container_width=True):
+        if st.button("Find Events!", key="view_events_btn", type="primary", use_container_width=True):
             st.session_state["page"] = "attendee_portal"
             st.rerun()
  
@@ -146,7 +153,9 @@ if st.session_state["role"] == "Attendee":
         for event in events:
             event_names.append(event["name"])
 
-        selected_event_name = st.selectbox("Select Event", event_names)
+        selected_event_name = st.selectbox("Select Event:", event_names, key="attendee_event_selectbox")
+        st.header("Event Details")
+        st.markdown("---")
 
         selected_event = None
         for event in events:
@@ -156,7 +165,7 @@ if st.session_state["role"] == "Attendee":
         if selected_event:
             st.markdown(f"Event: {selected_event['name']}")
             st.write(f" Date/Time: {selected_event['date']} at {selected_event['time']}")
-            st.write(f"Location:{selected_event['location']}")
+            st.write(f" Location:{selected_event['location']}")
             st.write(f"{selected_event['description']}")
             st.write(f"Tickets Available: {selected_event['tickets'] - selected_event['reserved']}")
 
@@ -165,20 +174,20 @@ if st.session_state["role"] == "Attendee":
                     selected_event["reserved"] += 1
                     with open(events_file, "w") as f:
                         json.dump(events, f, indent=4)
-                    with open(events_file, "r") as f:
-                        events = json.load(f)
-                    st.rerun()
+
                     st.success("Ticket reserved!")
+                    time.sleep(2)
+                    st.rerun()
                 else:
                     st.error("Sold out")
-    if st.button("Log out", type="primary", use_container_width=True):
+    if st.button("Log out", type="primary", use_container_width=True, key="attendee_logout"):
             with st.spinner("logging out..."):
                 st.session_state["logged_in"] = False
-                st.session_state["user"] = False
-                st.session_state["role"] = False
+                st.session_state["user"] = None
+                st.session_state["role"] = None
                 st.session_state["page"] = "login"
                 st.success("Logged out successfully")
-                time.sleep(4) 
+                time.sleep(4)
                 st.rerun()
 
 
@@ -197,7 +206,7 @@ if st.session_state["role"] == "Admin":
         else:
             events = []
 
-    tab1, tab2= st.tabs(["Create Event", "Update Event"])
+    tab1, tab2= st.tabs(["Create Event", "View and Update Event"])
     with tab1:
         st.subheader("Create New Event")
         name_input = st.text_input("Event Name", key="create_name")
@@ -207,7 +216,7 @@ if st.session_state["role"] == "Admin":
         description_input = st.text_area("Description", key="create_description")
         tickets_input = st.number_input("Tickets", min_value=1, key="create_ticket")
 
-        if st.button("Create Event"):
+        if st.button("Create Event", type="primary", use_container_width=True, key="create_event"):
             events.append({
                 "id": str(uuid.uuid4()),
                 "name": name_input,
@@ -220,9 +229,9 @@ if st.session_state["role"] == "Admin":
             })
             with open(events_file, "w") as f:
                json.dump(events, f, indent=4)
-               with open(users_file, "r") as f:
-                    users = json.load(f)
+
             st.success("Event created")
+            time.sleep(2)
             st.rerun()
             
 
@@ -231,7 +240,7 @@ if st.session_state["role"] == "Admin":
         st.subheader("View and Update Event")
 
         event_names = [event["name"] for event in events]
-        selected_name = st.selectbox("Select Event", event_names)
+        selected_name = st.selectbox("Select Event", event_names, key="admin_event_selectbox")
 
         selected_event = None
         for event in events:
@@ -239,14 +248,14 @@ if st.session_state["role"] == "Admin":
                 selected_event = event
 
         if selected_event:
-            new_name = st.text_input("Event Name", selected_event["name"])
-            new_date = st.text_input("Date", selected_event["date"])
-            new_time = st.text_input("Time", selected_event["time"])
-            new_location = st.text_input("Location", selected_event["location"])
-            new_description = st.text_area("Description", selected_event["description"])
-            new_tickets = st.number_input("Tickets", value=selected_event["tickets"], min_value=1)
+            new_name = st.text_input("Event Name", selected_event["name"], key="new_name")
+            new_date = st.text_input("Date", selected_event["date"], key="new_date")
+            new_time = st.text_input("Time", selected_event["time"], key="new_time")
+            new_location = st.text_input("Location", selected_event["location"], key="new_location")
+            new_description = st.text_area("Description", selected_event["description"], key="new_description")
+            new_tickets = st.number_input("Tickets", value=selected_event["tickets"], min_value=1, key="new_tickets")
 
-            if st.button("Save Changes"):
+            if st.button("Save Changes", type="primary", use_container_width=True, key="save_event"):
 
                 for event in events:
                     if event["id"] == selected_event["id"]:
@@ -262,13 +271,14 @@ if st.session_state["role"] == "Admin":
                     json.dump(events, f, indent=4)
 
                 st.success("Event updated!")
+                time.sleep(2)
                 st.rerun()
-    if st.button("Log out", type="primary", use_container_width=True):
+    if st.button("Log out", type="primary", use_container_width=True, key="admin_logout"):
             with st.spinner("logging out..."):
                 st.session_state["logged_in"] = False
-                st.session_state["user"] = False
-                st.session_state["role"] = False
+                st.session_state["user"] = None
+                st.session_state["role"] = None
                 st.session_state["page"] = "login"
                 st.success("Logged out successfully!")
-                time.sleep(4) 
+                time.sleep(2) 
                 st.rerun()

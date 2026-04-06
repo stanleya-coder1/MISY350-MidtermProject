@@ -4,7 +4,7 @@
         "name": "Graduation",
         "date": "5-24-2026",
         "time": "10:00 AM",
-        "location": "Newark",
+        "location": "Newark, DE",
         "description": "Graduation ceremony for the 2026 class.",
         "tickets": 500,
         "reserved": 120
@@ -17,7 +17,7 @@
         "location": "Philadelphia",
         "description": "Live music and entertainment. Pop and Rock bands.",
         "tickets": 125,
-        "reserved": 53
+        "reserved": 55
     },
     {
         "id": "6fedd138-275b-460a-832e-b8849a29e5a4",
@@ -37,6 +37,16 @@
         "location": "Newark, DE",
         "description": "Celebrating 22 years.",
         "tickets": 15,
+        "reserved": 2
+    },
+    {
+        "id": "484f2196-1584-4388-be44-b3017fa8b74d",
+        "name": "MVP Midterm Project",
+        "date": "4-5-2026",
+        "time": "11:30",
+        "location": "Newark, DE",
+        "description": "MVP phase 1 of midterm project due.",
+        "tickets": 25,
         "reserved": 0
     }
 ]

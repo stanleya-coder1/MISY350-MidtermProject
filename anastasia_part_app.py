@@ -112,6 +112,14 @@ if not st.session_state["logged_in"]:
         role_input = st.selectbox("Role", ["Attendee", "Admin"], key="reg_role")
 
         if st.button("Create Account"):
+            #if not not email_input or not name_input or not pass_input:
+             #   st.warning("Fill in all required fields")
+            #elif any(u["email"].lower() == email_input.lower() for u in users):
+              #  st.error("An account with this email already exists.")
+            #elif len(pass_input) < 6:
+             #   st.error("Password must be at least 6 characters long.")
+    
+            #else:
             users.append({
                 "id": str(uuid.uuid4()),
                 "email": email_input,
@@ -189,7 +197,7 @@ if st.session_state["role"] == "Admin":
         else:
             events = []
 
-    tab1, tab2, tab3 = st.tabs(["Create Event", "View Events", "Update Event"])
+    tab1, tab2 = st.tabs(["Create Event", "View Events", "Update Event"])
     with tab1:
         st.subheader("Create New Event")
         name_input = st.text_input("Event Name", key="create_name")
@@ -222,7 +230,7 @@ if st.session_state["role"] == "Admin":
 
 
 
-    with tab3:
+    with tab2:
         st.subheader("View and Update Event")
 
         event_names = [event["name"] for event in events]
