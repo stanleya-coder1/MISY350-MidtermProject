@@ -85,27 +85,24 @@ if not st.session_state["logged_in"]:
         pass_input = st.text_input("Password", type="password", key="login_password")
             
         if st.button("Login"):
-            if not email_input and pass_input:
-                st.warning("Please provide information")
-            else:
-                with st.spinner("Logging in..."):
-                    time.sleep(2)
-                    found_user = None
-                    for user in users:
-                        if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == pass_input:
-                            found_user = user
-                            break
+            with st.spinner("Logging in..."):
+                time.sleep(2)
+                found_user = None
+                for user in users:
+                       if user["email"].strip().lower() == email_input.strip().lower() and user["password"] == pass_input:
+                        found_user = user
+                        break
                         
-                    if found_user:
-                        st.success(f"Welcome back, {found_user['email']}!")
-                        st.session_state["logged_in"] = True
-                        st.session_state["user"] = found_user
-                        st.session_state["role"] = found_user["role"]
-                        st.session_state["page"] = "home"
-                        time.sleep(2)
-                        st.rerun()
-                    else:
-                        st.error("Invalid credentials")
+                if found_user:
+                    st.success(f"Welcome back, {found_user['email']}!")
+                    st.session_state["logged_in"] = True
+                    st.session_state["user"] = found_user
+                    st.session_state["role"] = found_user["role"]
+                    st.session_state["page"] = "home"
+                    time.sleep(2)
+                    st.rerun()
+                else:
+                    st.error("Invalid credentials")
 
     with tab2:
         st.subheader("Register")
@@ -115,19 +112,19 @@ if not st.session_state["logged_in"]:
         role_input = st.selectbox("Role", ["Attendee", "Admin"], key="reg_role")
 
         if st.button("Create Account"):
+
             users.append({
                 "id": str(uuid.uuid4()),
                 "email": email_input,
                 "full_name": name_input,
                 "password": pass_input,
                 "role": role_input
-            })
+                })
             with open(users_file, "w") as f:
                 json.dump(users, f, indent=4)
                 with open(users_file, "r") as f:
                     users = json.load(f)
             st.success("Account created!")
-
 
 
 

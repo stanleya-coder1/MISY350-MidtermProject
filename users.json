@@ -68,5 +68,19 @@
         "full_name": "matt",
         "password": "matt",
         "role": "Admin"
+    },
+    {
+        "id": "b7bb6719-4ab9-482b-a4fc-f8e6a0c6ea68",
+        "email": "",
+        "full_name": "",
+        "password": "",
+        "role": "Attendee"
+    },
+    {
+        "id": "1dbfddac-488a-4164-a8b6-6c2b5bfe3059",
+        "email": "",
+        "full_name": "",
+        "password": "",
+        "role": "Attendee"
     }
 ]
