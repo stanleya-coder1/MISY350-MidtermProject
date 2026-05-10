@@ -151,7 +151,7 @@ if st.session_state.page == "login":
 else:
     st.error("Invalid credentials")
 
-#Adfmin Dashboard
+#Admin Dashboard
 if (st.session_state.page == "dashboard" and st.session_state.role == "Admin"):
     st.title("Admin Dashboard")
 
@@ -336,15 +336,9 @@ if (st.session_state.page == "events" and st.session_state.role == "Attendee"):
                     if st.button("Reserve Ticket", key=f"reserve_{event['id']}", use_container_width=True):
                         if remaining > 0:
                             reservation = {
-                                "user_id": (
-                                    st.session_state.user["id"]
-                                ),
-                                "email": (
-                                    st.session_state.user["email"]
-                                ),
-                                "reserved_at": str(
-                                    datetime.now()
-                                )
+                                "user_id": (st.session_state.user["id"]),
+                                "email": (st.session_state.user["email"]),
+                                "reserved_at": str(datetime.now())
                             }
 
                             if "reservations" not in event:
