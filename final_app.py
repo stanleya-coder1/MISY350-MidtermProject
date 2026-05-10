@@ -181,8 +181,8 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
     with tab1:
         st.subheader("Create New Event")
         name_input = st.text_input("Event Name", key="create_name")
-        date_input = st.text_input("Date", key="create_date")
-        time_input= st.text_input("Time", key="create_time")
+        date_input = st.date_input("Date", key="create_date")
+        time_input= st.time_input("Time", key="create_time")
         location_input = st.text_input("Location", key="create_location")
         description_input = st.text_area("Description", key="create_description")
         tickets_input = st.number_input("Tickets", min_value=1, key="create_ticket")
