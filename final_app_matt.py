@@ -110,7 +110,7 @@ if st.session_state["page"] == "login":
 #admin
 
 if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admin":
-
+    st.title("Admin Dashboard")
     col1,col2,col3 = st.columns([2,3,2])
     st.divider()
 
@@ -166,6 +166,34 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
                 st.success("Event Updated")
                 time.sleep(2)
                 st.rerun()
+
+    tab1, tab2= st.tabs(["Create Event", "View and Update Event"])
+    with tab1:
+        st.subheader("Create New Event")
+        name_input = st.text_input("Event Name", key="create_name")
+        date_input = st.text_input("Date", key="create_date")
+        time_input= st.text_input("Time", key="create_time")
+        location_input = st.text_input("Location", key="create_location")
+        description_input = st.text_area("Description", key="create_description")
+        tickets_input = st.number_input("Tickets", min_value=1, key="create_ticket")
+
+        if st.button("Create Event", type="primary", use_container_width=True, key="create_event"):
+            events.append({
+                "id": str(uuid.uuid4()),
+                "name": name_input,
+                "date": date_input,
+                "time": time_input,
+                "location": location_input,
+                "description": description_input,
+                "tickets": tickets_input,
+                "reserved": 0
+            })
+            with open(events_file, "w") as f:
+               json.dump(events, f, indent=4)
+
+            st.success("Event created")
+            time.sleep(2)
+            st.rerun()
 
 
 
