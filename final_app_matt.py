@@ -157,3 +157,37 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
 
 
 #attendee
+if st.session_state["page"] == "events" and st.session_state["role"] == "Attendee":
+
+    col1,col2,col3 = st.columns([2,3,2])
+    with col2:
+        st.header("Browse Events")
+
+    st.divider()
+
+    selected_event = None
+    col1,col2 = st.columns([4,2])
+
+    with col1:
+        event_table = st.dataframe(events, on_select="rerun", selection_mode="single-row")
+        selection = event_table.get("selection")
+        rows = selection.get("rows", []) if selection else []
+
+        if rows:
+            selected_event = events[rows[0]]
+
+    with col2:
+        if selected_event:
+            st.markdown(f"**Event:** {selected_event['name']}")
+            st.markdown(f"Tickets Left: {selected_event['tickets'] - selected_event['reserved']}")
+
+            if st.button("Reserve Ticket", type="primary", use_container_width=True):
+                if selected_event["reserved"] < selected_event["tickets"]:
+                    selected_event["reserved"] += 1
+                    with open(events_file, "w") as f:
+                        json.dump(events, f)
+                    st.success("Ticket Reserved")
+                    time.sleep(2)
+                    st.rerun()
+                else:
+                    st.error("Sold Out")
