@@ -217,7 +217,6 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
 
     # details 
     with col2:
-        st.markdown("### Event Details")
 
         if selected_event:
             st.markdown(f"**Name:** {selected_event['name']}")
