@@ -90,9 +90,7 @@ if st.session_state.logged_in:
 
         st.success(
             f"Logged in as: "f"{st.session_state.user['full_name']}")
-
         st.caption(f"Role: {st.session_state.role}")
-
         st.divider()
 
         if st.button("Dashboard", use_container_width=True):

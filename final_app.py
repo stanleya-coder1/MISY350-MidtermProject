@@ -8,7 +8,7 @@ import time
 st.set_page_config("Event Manager", layout="wide", initial_sidebar_state="expanded")
 
 
-#session state stuff
+#session state
 
 if "page" not in st.session_state:
     st.session_state["page"] = "login"
@@ -68,11 +68,19 @@ else:
 #sidebar ?
 if st.session_state["logged_in"]:
     with st.sidebar:
+        st.title("Event Manager")
+        st.success(
+            f"Logged in as: "f"{st.session_state.user['full_name']}")
+        st.caption(f"Role: {st.session_state.role}")
+        st.divider()
         if st.button("Dashboard", use_container_width=True):
             st.session_state["page"] = "dashboard"
             st.rerun()
         if st.button("Browse Events", use_container_width=True):
             st.session_state["page"] = "events"
+            st.rerun()
+        if st.button("My Tickets", use_container_width=True):
+            st.session_state["page"] = "tickets"
             st.rerun()
         if st.button("Logout", use_container_width=True):
             st.session_state["logged_in"] = False
@@ -80,6 +88,8 @@ if st.session_state["logged_in"]:
             st.session_state["role"] = None
             st.session_state["page"] = "login"
             st.rerun()
+        st.divider()
+
 #login
 
 if st.session_state["page"] == "login":
@@ -201,8 +211,7 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
 if st.session_state["page"] == "events" and st.session_state["role"] == "Attendee":
 
     col1,col2,col3 = st.columns([2,3,2])
-    with col2:
-        st.header("Browse Events")
+    st.header("Browse Events")
 
     st.divider()
 
@@ -233,7 +242,7 @@ if st.session_state["page"] == "events" and st.session_state["role"] == "Attende
                 else:
                     st.error("Sold Out")
 
-    # my tickets
+# my tickets
 if (st.session_state.page == "tickets" and st.session_state.role == "Attendee"):
     st.title("My Tickets")
 
