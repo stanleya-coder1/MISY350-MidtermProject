@@ -93,3 +93,14 @@ if st.session_state["page"] == "login":
                 st.rerun()
             else:
                 st.error("Invalid credentials")
+
+#admin
+
+if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admin":
+
+    col1,col2,col3 = st.columns([2,3,2])
+
+    st.divider()
+
+
+#attendee
