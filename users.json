@@ -40,5 +40,12 @@
         "full_name": "UD Student",
         "password": "wejciwebcec",
         "role": "Attendee"
+    },
+    {
+        "id": "eb099f68-b35f-492b-b823-669a5ecf0db1",
+        "email": "student@gmail.com",
+        "full_name": "Student",
+        "password": "eckweucgkwehc",
+        "role": "Attendee"
     }
 ]
