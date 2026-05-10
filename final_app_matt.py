@@ -64,3 +64,32 @@ else:
     "reserved": 50
   }
 ]
+    
+#sidebar ?
+
+#login
+
+if st.session_state["page"] == "login":
+    st.title("Event Portal Login")
+
+    email_input = st.text_input("Email")
+    pass_input = st.text_input("Password", type="password")
+
+    if st.button("Login", type="primary", use_container_width=True):
+        with st.spinner("Logging in..."):
+            time.sleep(2)
+            found_user = None
+            for user in users:
+                if user["email"].lower() == email_input.lower() and user["password"] == pass_input:
+                    found_user = user
+
+            if found_user:
+                st.session_state["logged_in"] = True
+                st.session_state["user"] = found_user
+                st.session_state["role"] = found_user["role"]
+                st.session_state["page"] = "dashboard"
+                st.success("Welcome!")
+                time.sleep(2)
+                st.rerun()
+            else:
+                st.error("Invalid credentials")
