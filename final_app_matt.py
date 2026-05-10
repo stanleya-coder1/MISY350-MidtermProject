@@ -68,17 +68,34 @@ else:
 #sidebar ?
 if st.session_state["logged_in"]:
     with st.sidebar:
+        st.title("Event Manager")
+
+        st.success(
+            f"Logged in as: "f"{st.session_state.user['full_name']}")
+
+        st.caption(f"Role: {st.session_state.role}")
+
+        st.divider()
+
         if st.button("Dashboard", use_container_width=True):
-            st.session_state["page"] = "dashboard"
+            st.session_state.page = "dashboard"
             st.rerun()
-        if st.button("Browse Events", use_container_width=True):
-            st.session_state["page"] = "events"
+
+        if st.button("Find Events", use_container_width=True):
+            st.session_state.page = "events"
             st.rerun()
+
+        if st.button("My Tickets", use_container_width=True):
+            st.session_state.page = "tickets"
+            st.rerun()
+
+        st.divider()
+
         if st.button("Logout", use_container_width=True):
-            st.session_state["logged_in"] = False
-            st.session_state["user"] = None
-            st.session_state["role"] = None
-            st.session_state["page"] = "login"
+            st.session_state.logged_in = False
+            st.session_state.user = None
+            st.session_state.role = None
+            st.session_state.page = "login"
             st.rerun()
 #login
 
@@ -107,6 +124,62 @@ if st.session_state["page"] == "login":
             else:
                 st.error("Invalid credentials")
 
+    st.divider()
+
+    if st.button("Create an Account", use_container_width=True):
+        st.session_state["page"] = "register"
+        st.rerun()
+
+#registration 
+if st.session_state["page"] == "register":
+    col1,col2,col3 = st.columns([1,3,1])
+    with col2:
+        with st.container(border=True):
+
+            st.header("Create Account")
+            st.divider()
+
+            email_input = st.text_input("Email", key="reg_email")
+            name_input = st.text_input("Full Name", key="reg_name")
+            pass_input = st.text_input("Password", type="password", key="reg_password")
+            role_input = st.radio("Role", ["Attendee", "Admin"], key="reg_role")
+
+            duplicate_email = False
+            for u in users:
+                if u["email"].lower() == email_input.lower():
+                    duplicate_email = True
+
+            if st.button("Register", type="primary", use_container_width=True):
+
+                if not email_input or not name_input or not pass_input:
+                    st.warning("Please fill in all fields")
+
+                elif duplicate_email:
+                    st.error("Account already exists")
+
+                else:
+                    with st.spinner("Creating account..."):
+                        users.append({
+                            "id": str(uuid.uuid4()),
+                            "email": email_input,
+                            "full_name": name_input,
+                            "password": pass_input,
+                            "role": role_input
+                        })
+
+                        with open(users_file, "w") as f:
+                            json.dump(users, f)
+
+                        st.success("Account created!")
+                        time.sleep(2)
+                        st.session_state["page"] = "login"
+                        st.rerun()
+
+            st.divider()
+
+            if st.button("Back to Login", use_container_width=True):
+                st.session_state["page"] = "login"
+                st.rerun()
 #admin
 
 if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admin":
@@ -201,8 +274,8 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
 if st.session_state["page"] == "events" and st.session_state["role"] == "Attendee":
 
     col1,col2,col3 = st.columns([2,3,2])
-    with col2:
-        st.header("Browse Events")
+    
+    st.header("Browse Events")
 
     st.divider()
 
