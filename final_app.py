@@ -19,6 +19,21 @@ if "user" not in st.session_state:
 if "role" not in st.session_state:
     st.session_state["role"] = None
 
+# definitions
+def get_reserved_count(event):
+    return len(event.get("reservations", []))
+
+
+def get_tickets_left(event):
+    return event["tickets"] - get_reserved_count(event)
+
+
+def user_has_ticket(event, user_id):
+    for reservation in event.get("reservations", []):
+        if reservation["user_id"] == user_id:
+            return True
+    return False
+
 #loading the users
 
 users_file = Path("users.json")
@@ -65,7 +80,7 @@ else:
   }
 ]
     
-#sidebar ?
+#sidebar
 if st.session_state["logged_in"]:
     with st.sidebar:
         st.title("Event Manager")
@@ -116,6 +131,62 @@ if st.session_state["page"] == "login":
                 st.rerun()
             else:
                 st.error("Invalid credentials")
+    st.divider()
+
+    if st.button("Create an Account", use_container_width=True):
+        st.session_state["page"] = "register"
+        st.rerun()
+
+#registration 
+if st.session_state["page"] == "register":
+    col1,col2,col3 = st.columns([1,3,1])
+    with col2:
+        with st.container(border=True):
+
+            st.header("Create Account")
+            st.divider()
+
+            email_input = st.text_input("Email", key="reg_email")
+            name_input = st.text_input("Full Name", key="reg_name")
+            pass_input = st.text_input("Password", type="password", key="reg_password")
+            role_input = st.radio("Role", ["Attendee", "Admin"], key="reg_role")
+
+            duplicate_email = False
+            for u in users:
+                if u["email"].lower() == email_input.lower():
+                    duplicate_email = True
+
+            if st.button("Register", type="primary", use_container_width=True):
+
+                if not email_input or not name_input or not pass_input:
+                    st.warning("Please fill in all fields")
+
+                elif duplicate_email:
+                    st.error("Account already exists")
+
+                else:
+                    with st.spinner("Creating account..."):
+                        users.append({
+                            "id": str(uuid.uuid4()),
+                            "email": email_input,
+                            "full_name": name_input,
+                            "password": pass_input,
+                            "role": role_input
+                        })
+
+                        with open(users_file, "w") as f:
+                            json.dump(users, f)
+
+                        st.success("Account created!")
+                        time.sleep(2)
+                        st.session_state["page"] = "login"
+                        st.rerun()
+
+            st.divider()
+
+            if st.button("Back to Login", use_container_width=True):
+                st.session_state["page"] = "login"
+                st.rerun()
 
 #admin
 
@@ -124,7 +195,7 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
     col1,col2,col3 = st.columns([2,3,2])
     st.divider()
 
-# admin metrics ?
+# admin metrics 
     col1,col2 = st.columns(2)
     with col1:
         st.markdown("### Total Events")
@@ -226,24 +297,57 @@ if st.session_state["page"] == "events" and st.session_state["role"] == "Attende
         if rows:
             selected_event = events[rows[0]]
 
-    with col2:
-        if selected_event:
-            st.markdown(f"**Event:** {selected_event['name']}")
-            st.markdown(f"Tickets Left: {selected_event['tickets'] - selected_event['reserved']}")
+    #with col2:
+    #    if selected_event:
+    #        st.markdown(f"**Event:** {selected_event['name']}")
+    #        st.markdown(f"Tickets Left: {selected_event['tickets'] - selected_event['reserved']}")
+#
+ #           if st.button("Reserve Ticket", type="primary", use_container_width=True):
+  #          
+   #             if selected_event["reserved"] < selected_event["tickets"]:
+    #                selected_event["reserved"] += 1
+     #               with open(events_file, "w") as f:
+      #                  json.dump(events, f)
+ #                   st.success("Ticket Reserved")
+  #                  time.sleep(2)
+   #                 st.rerun()
+    #            else:
+     #               st.error("Sold Out")
+    with col2: 
+        if selected_event: 
+            st.markdown( f"**Event:** {selected_event['name']}" ) 
+            st.markdown( f"Tickets Left: " f"{selected_event['tickets'] - selected_event['reserved']}" ) 
+            
+            if "reservations" not in selected_event: 
+                selected_event["reservations"] = [] 
 
-            if st.button("Reserve Ticket", type="primary", use_container_width=True):
-                if selected_event["reserved"] < selected_event["tickets"]:
-                    selected_event["reserved"] += 1
-                    with open(events_file, "w") as f:
-                        json.dump(events, f)
-                    st.success("Ticket Reserved")
-                    time.sleep(2)
-                    st.rerun()
-                else:
-                    st.error("Sold Out")
+                already_reserved = False 
+                
+                for reservation in selected_event["reservations"]: 
+                    if ( reservation["user_id"] == st.session_state["user"]["id"] ): 
+                        already_reserved = True 
+                        if already_reserved: 
+                            st.success( "You already reserved a ticket for this event" ) 
+                        else: 
+                            if st.button( "Reserve Ticket", type="primary", use_container_width=True ): 
+                                if ( selected_event["reserved"] < selected_event["tickets"] ): 
+                                    selected_event["reserved"] += 1 
+                                    # save reservation to user 
+                                    reservation = { 
+                                        "user_id": st.session_state["user"]["id"], 
+                                        "email": st.session_state["user"]["email"], 
+                                        "reserved_at": str(datetime.now()) } 
+                                    
+                                    selected_event[ "reservations" ].append(reservation) 
+                                    with open(events_file, "w") as f: 
+                                        json.dump(events, f) 
+                                        st.success("Ticket Reserved") 
+                                        time.sleep(2) 
+                                        st.rerun() 
+                                else: st.error("Sold Out")
 
 # my tickets
-if (st.session_state.page == "tickets" and st.session_state.role == "Attendee"):
+if (st.session_state["page"] == "tickets" and st.session_state.role == "Attendee"):
     st.title("My Tickets")
 
     current_user = st.session_state.user
