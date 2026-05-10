@@ -282,69 +282,67 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
 if st.session_state["page"] == "events" and st.session_state["role"] == "Attendee":
 
     col1,col2,col3 = st.columns([2,3,2])
+
     st.header("Browse Events")
 
     st.divider()
 
     selected_event = None
+
     col1,col2 = st.columns([4,2])
 
     with col1:
         event_table = st.dataframe(events, on_select="rerun", selection_mode="single-row")
+
         selection = event_table.get("selection")
+
         rows = selection.get("rows", []) if selection else []
 
         if rows:
             selected_event = events[rows[0]]
 
-    #with col2:
-    #    if selected_event:
-    #        st.markdown(f"**Event:** {selected_event['name']}")
-    #        st.markdown(f"Tickets Left: {selected_event['tickets'] - selected_event['reserved']}")
-#
- #           if st.button("Reserve Ticket", type="primary", use_container_width=True):
-  #          
-   #             if selected_event["reserved"] < selected_event["tickets"]:
-    #                selected_event["reserved"] += 1
-     #               with open(events_file, "w") as f:
-      #                  json.dump(events, f)
- #                   st.success("Ticket Reserved")
-  #                  time.sleep(2)
-   #                 st.rerun()
-    #            else:
-     #               st.error("Sold Out")
-    with col2: 
-        if selected_event: 
-            st.markdown( f"**Event:** {selected_event['name']}" ) 
-            st.markdown( f"Tickets Left: " f"{selected_event['tickets'] - selected_event['reserved']}" ) 
-            
-            if "reservations" not in selected_event: 
-                selected_event["reservations"] = [] 
+    with col2:
 
-                already_reserved = False 
-                
-                for reservation in selected_event["reservations"]: 
-                    if ( reservation["user_id"] == st.session_state["user"]["id"] ): 
-                        already_reserved = True 
-                        if already_reserved: 
-                            st.success( "You already reserved a ticket for this event" ) 
-                        else: 
-                            if st.button( "Reserve Ticket", type="primary", use_container_width=True ): 
-                                if ( selected_event["reserved"] < selected_event["tickets"] ): 
-                                    selected_event["reserved"] += 1 
-                                    # save reservation to user 
-                                    reservation = { 
-                                        "user_id": st.session_state["user"]["id"], 
-                                        "email": st.session_state["user"]["email"], 
-                                        "reserved_at": str(datetime.now()) } 
-                                    
-                                    selected_event[ "reservations" ].append(reservation) 
-                                    with open(events_file, "w") as f: 
-                                        json.dump(events, f) 
-                                        st.success("Ticket Reserved") 
-                                        time.sleep(2) 
-                                        st.rerun() 
-                                else: st.error("Sold Out")
+        if selected_event:
+
+            st.markdown(f"**Event:** {selected_event['name']}")
+
+            st.markdown(f"Tickets Left: "f"{selected_event['tickets'] - selected_event['reserved']}")
+
+            if "reservations" not in selected_event:
+                selected_event["reservations"] = []
+
+            already_reserved = False
+
+            for reservation in selected_event["reservations"]:
+                if (reservation["user_id"] == st.session_state["user"]["id"]):
+                    already_reserved = True
+
+            if st.button("Reserve Ticket", type="primary", use_container_width=True):
+                if already_reserved:
+                    st.warning("You already reserved this event")
+
+                else:
+                    if (selected_event["reserved"] < selected_event["tickets"]):
+                        selected_event["reserved"] += 1
+
+                        # Add reservation to person
+                        reservation = {
+                            "user_id":st.session_state["user"]["id"],
+                            "email":st.session_state["user"]["email"],
+                            "reserved_at":str(datetime.now())
+                        }
+
+                        selected_event["reservations"].append(reservation)
+
+                        with open(events_file, "w") as f:
+                            json.dump(events, f)
+                        st.success("Ticket Reserved")
+                        time.sleep(2)
+                        st.rerun()
+
+                    else:
+                        st.error("Sold Out")
 
 # my tickets
 if (st.session_state["page"] == "tickets" and st.session_state.role == "Attendee"):
