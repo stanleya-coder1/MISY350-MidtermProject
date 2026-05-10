@@ -66,7 +66,20 @@ else:
 ]
     
 #sidebar ?
-
+if st.session_state["logged_in"]:
+    with st.sidebar:
+        if st.button("Dashboard", use_container_width=True):
+            st.session_state["page"] = "dashboard"
+            st.rerun()
+        if st.button("Browse Events", use_container_width=True):
+            st.session_state["page"] = "events"
+            st.rerun()
+        if st.button("Logout", use_container_width=True):
+            st.session_state["logged_in"] = False
+            st.session_state["user"] = None
+            st.session_state["role"] = None
+            st.session_state["page"] = "login"
+            st.rerun()
 #login
 
 if st.session_state["page"] == "login":
