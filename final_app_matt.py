@@ -99,8 +99,61 @@ if st.session_state["page"] == "login":
 if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admin":
 
     col1,col2,col3 = st.columns([2,3,2])
-
     st.divider()
+
+# admin metrics ?
+    col1,col2 = st.columns(2)
+    with col1:
+        st.markdown("### Total Events")
+        st.markdown(f"## {len(events)}")
+
+    sold_out = 0
+    for event in events:
+        if event["reserved"] >= event["tickets"]:
+            sold_out += 1
+
+    with col2:
+        st.markdown("### Sold Out")
+        st.markdown(f"## {sold_out}")
+
+
+
+    selected_event = None
+    col1,col2 = st.columns([4,2])
+
+    with col1:
+        event_table = st.dataframe(events, on_select="rerun", selection_mode="single-row")
+        selection = event_table.get("selection")
+        rows = selection.get("rows", []) if selection else []
+
+        if rows:
+            selected_event = events[rows[0]]
+
+    # details 
+    with col2:
+        st.markdown("### Event Details")
+
+        if selected_event:
+            st.markdown(f"**Name:** {selected_event['name']}")
+            st.markdown(f"**Date:** {selected_event['date']}")
+            st.markdown(f"**Tickets:** {selected_event['reserved']} / {selected_event['tickets']}")
+
+            new_name = st.text_input("Event Name", selected_event["name"])
+            new_tickets = st.number_input("Tickets", value=selected_event["tickets"], min_value=1)
+
+            if st.button("Save Changes", type="primary", use_container_width=True):
+                for event in events:
+                    if event["id"] == selected_event["id"]:
+                        event["name"] = new_name
+                        event["tickets"] = new_tickets
+
+                with open(events_file, "w") as f:
+                    json.dump(events, f)
+
+                st.success("Event Updated")
+                time.sleep(2)
+                st.rerun()
+
 
 
 #attendee
