@@ -88,15 +88,19 @@ if st.session_state["logged_in"]:
             f"Logged in as: "f"{st.session_state.user['full_name']}")
         st.caption(f"Role: {st.session_state.role}")
         st.divider()
-        if st.button("Dashboard", use_container_width=True):
-            st.session_state["page"] = "dashboard"
-            st.rerun()
-        if st.button("Browse Events", use_container_width=True):
-            st.session_state["page"] = "events"
-            st.rerun()
-        if st.button("My Tickets", use_container_width=True):
-            st.session_state["page"] = "tickets"
-            st.rerun()
+        #attendee view
+        if st.session_state["role"] == "attendee":
+            if st.button("Browse Events", use_container_width=True):
+                st.session_state["page"] = "events"
+                st.rerun()
+            if st.button("My Tickets", use_container_width=True):
+                st.session_state["page"] = "tickets"
+                st.rerun()
+        else: #admin
+            if st.button("Dashboard", use_container_width=True):
+                st.session_state["page"] = "dashboard"
+                st.rerun()
+
         if st.button("Logout", use_container_width=True):
             st.session_state["logged_in"] = False
             st.session_state["user"] = None
