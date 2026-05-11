@@ -84,8 +84,7 @@ else:
 if st.session_state["logged_in"]:
     with st.sidebar:
         st.title("Event Manager")
-        st.success(
-            f"Logged in as: "f"{st.session_state.user['full_name']}")
+        st.success(f"Logged in as: "f"{st.session_state.user['full_name']}")
         st.caption(f"Role: {st.session_state.role}")
         st.divider()
         #attendee view
@@ -266,8 +265,8 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
             events.append({
                 "id": str(uuid.uuid4()),
                 "name": name_input,
-                "date": date_input,
-                "time": time_input,
+                "date": str(date_input),
+                "time": str(time_input),
                 "location": location_input,
                 "description": description_input,
                 "tickets": tickets_input,
