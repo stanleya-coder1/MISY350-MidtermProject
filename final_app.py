@@ -89,7 +89,7 @@ if st.session_state["logged_in"]:
         st.caption(f"Role: {st.session_state.role}")
         st.divider()
         #attendee view
-        if st.session_state["role"] == "attendee":
+        if st.session_state["role"] == "Attendee":
             if st.button("Browse Events", use_container_width=True):
                 st.session_state["page"] = "events"
                 st.rerun()
