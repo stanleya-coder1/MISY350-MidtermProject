@@ -112,7 +112,10 @@ if st.session_state["logged_in"]:
 
 if st.session_state["page"] == "login":
     st.title("Event Portal Login")
-
+    st.divider()
+    st.metric("Admin email = admin@event.edu" , "Admin password = 123ssag@43AE")
+    st.metric("Attendee email = testaccount5@email.com" , "Attendee password = abcdefgh")
+    st.divider()
     email_input = st.text_input("Email")
     pass_input = st.text_input("Password", type="password")
 
@@ -134,6 +137,7 @@ if st.session_state["page"] == "login":
                 st.rerun()
             else:
                 st.error("Invalid credentials")
+
     st.divider()
 
     if st.button("Create an Account", use_container_width=True):
