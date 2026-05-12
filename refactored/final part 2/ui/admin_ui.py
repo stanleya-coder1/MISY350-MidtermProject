@@ -69,3 +69,41 @@ def show_browse_all_events():
                 st.caption(f"Hosted by {event['created_by_name']}")
             with col2:
                 st.metric("Tickets Left", get_tickets_left(event))
+
+#admin CRUD - manage/delete events
+def show_manage_my_events():
+    st.title("Manage My Events")
+    events = get_events_by_admin(st.session_state.user["id"])
+
+    if not events:
+        st.info("No events created yet")
+        return
+
+    for event in events:
+        with st.container(border=True):
+            st.subheader(event["name"])
+            col1, col2 = st.columns(2)
+
+            with col1:
+                updated_name = st.text_input("Event Name", value=event["name"], key=f"name_{event['id']}")
+                updated_tickets = st.number_input("Tickets", min_value=1, value=event["tickets"], key=f"tickets_{event['id']}")
+            with col2:
+                updated_location = st.text_input("Location", value=event["location"], key=f"location_{event['id']}")
+                updated_description = st.text_area("Description", value=event["description"], key=f"description_{event['id']}")
+
+            st.metric("Tickets Left", get_tickets_left(event))
+
+            button_col1, button_col2 = st.columns(2)
+            with button_col1:
+
+                if st.button("Save Changes", key=f"save_{event['id']}", use_container_width=True):
+                    update_event(event["id"], updated_name, updated_tickets, updated_location, updated_description)
+                    st.success("Event Updated")
+                    st.rerun()
+
+            with button_col2:
+                if st.button("Delete Event", key=f"delete_{event['id']}", use_container_width=True):
+                    delete_event(event["id"])
+                    st.success("Event Deleted")
+                    st.rerun()
+
