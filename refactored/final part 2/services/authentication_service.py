@@ -1,3 +1,4 @@
+#for users
 import uuid
 from data.data_manager import (load_data, save_data, users_file)
 

@@ -1,11 +1,45 @@
-#handles reservations
-
+#for events
 import uuid
 from pathlib import Path
 from data.data_manager import (load_data, save_data, events_file)
 
 
-#reserve ticket - attendee (CRUD - create)
+def get_all_events():
+    return load_data(events_file)
+
+
+#admin view events
+def get_events_by_admin(admin_id):
+    events = load_data(events_file)
+    return [
+        event
+        for event in events
+        if event.get("created_by") == admin_id
+    ]
+
+#admin CRUD - create (create event)
+def create_event(name, date, time, location, description, tickets, admin_user):
+    events = load_data(events_file)
+
+    new_event = {
+        "id": str(uuid.uuid4()),
+        "name": name,
+        "date": str(date),
+        "time": str(time),
+        "location": location,
+        "description": description,
+        "tickets": tickets,
+        "created_by": admin_user["id"],
+        "created_by_name": admin_user["full_name"],
+        "status": "Upcoming",
+        "reservations": []
+    }
+
+    events.append(new_event)
+    save_data(events_file, events)
+
+
+#attendee CRUD - create (reserve ticket)
 def reserve_ticket(event_id, user):
     events = load_data(events_file)
 
