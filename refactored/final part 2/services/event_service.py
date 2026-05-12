@@ -1,9 +1,9 @@
 #handles reservations
 
+import uuid
 from pathlib import Path
-from data.data_manager import (load_data, save_data)
+from data.data_manager import (load_data, save_data, events_file)
 
-events_file = Path("event copy.json")
 
 #reserve ticket - attendee (CRUD - create)
 def reserve_ticket(event_id, user):
