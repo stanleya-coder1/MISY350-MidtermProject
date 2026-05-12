@@ -20,3 +20,15 @@ if "role" not in st.session_state:
 
 if "page" not in st.session_state:
     st.session_state["page"] = "login"
+
+# sidebar
+if st.session_state.logged_in:
+    show_sidebar()
+
+page = st.session_state["page"]
+
+if page == "login":
+    show_login_page()
+
+elif page == "register":
+    show_register_page()
