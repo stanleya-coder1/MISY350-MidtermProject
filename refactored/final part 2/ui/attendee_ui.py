@@ -30,7 +30,7 @@ def show_attendee_home():
             st.caption(f"Hosted by {event['created_by_name']}")
 
 
-#atendee CRUD - browse/review events
+#atendee CRUD - browse/review events(R), reserve ticket (C)
 def show_browse_events():
     st.title("Browse Events")
 
@@ -55,5 +55,17 @@ def show_browse_events():
                 st.metric("Tickets Left", get_tickets_left(event))
                 result = None
 
+            #CRUD crearete reservation
+                if st.button("Reserve Ticket", key=event["id"]):
+                    result = reserve_ticket(event["id"], st.session_state["user"])
+                if result == "success":
+                    st.success("Ticket Reserved")
+                elif result == "sold_out":
+                    st.error("Sold Out")
+                elif result == "already_reserved":
+                    st.warning("Already Reserved")
 
+        column_list += 1
+        if column_list > 1:
+            column_list = 0
 
