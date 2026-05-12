@@ -41,3 +41,16 @@ elif page == "browse_events":
 
 elif page == "my_tickets":
     show_my_tickets()
+
+# admin pages
+elif page == "admin_home":
+    show_admin_home()
+
+elif page == "create_event":
+    show_create_event()
+
+elif page == "manage_my_events":
+    show_manage_my_events()
+
+elif page == "browse_all_events":
+    show_browse_all_events()
