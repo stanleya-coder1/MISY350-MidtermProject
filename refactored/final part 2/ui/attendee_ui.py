@@ -14,3 +14,17 @@ def show_attendee_home():
         if user_has_ticket(event, current_user["id"]):
             reserved_count += 1
 
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Events Available", len(events))
+    with col2:
+        st.metric("My Reservations", reserved_count)
+    st.divider()
+
+    st.subheader("Featured Events")
+    for event in events[:3]: #3 most recet events
+        with st.container(border=True):
+            st.subheader(event["name"])
+            st.write(event["date"])
+            st.write(event["location"])
+            st.caption(f"Hosted by {event['created_by_name']}")
