@@ -70,7 +70,7 @@ def show_browse_all_events():
             with col2:
                 st.metric("Tickets Left", get_tickets_left(event))
 
-#admin CRUD - manage/delete events
+#admin CRUD - update/delete events
 def show_manage_my_events():
     st.title("Manage My Events")
     events = get_events_by_admin(st.session_state.user["id"])
