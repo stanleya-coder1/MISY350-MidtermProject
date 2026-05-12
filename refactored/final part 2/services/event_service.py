@@ -39,6 +39,28 @@ def create_event(name, date, time, location, description, tickets, admin_user):
     save_data(events_file, events)
 
 
+#admin CRUD - update (update event)
+def update_event(event_id, updated_name, updated_tickets, updated_location, updated_description):
+    events = load_data(events_file)
+
+    for event in events:
+        if event["id"] == event_id:
+            event["name"] = updated_name
+            event["tickets"] = updated_tickets
+            event["location"] = updated_location
+            event["description"] = updated_description
+
+    save_data(events_file, events)
+
+
+#admin CRUD - delete (delete event)
+def delete_event(event_id):
+    events = load_data(events_file)
+    events = [event for event in events if event["id"] != event_id]
+    save_data(events_file, events)
+
+
+
 #attendee CRUD - create (reserve ticket)
 def reserve_ticket(event_id, user):
     events = load_data(events_file)
