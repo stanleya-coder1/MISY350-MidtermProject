@@ -69,3 +69,39 @@ def show_browse_events():
         if column_list > 1:
             column_list = 0
 
+
+# my tickets CRUD - review (R) and cancel (D)
+def show_my_tickets():
+    st.title("My Tickets")
+    current_user = st.session_state["user"]
+    events = get_all_events()
+    user_events = []
+
+    for event in events:
+        if user_has_ticket(event, current_user["id"]):
+            user_events.append(event)
+
+    if not user_events:
+        st.info("No reservations yet")
+        return
+
+    cols = st.columns(2)
+    column_list = 0
+    for event in user_events:
+        with cols[column_list]:
+            with st.container(border=True):
+                st.subheader(event["name"])
+                st.write(event["date"])
+                st.write(event["time"])
+                st.write(event["location"])
+                st.caption(f"Hosted by {event['created_by_name']}")
+                st.success("Reservation Confirmed")
+
+                if st.button("Cancel Reservation", key=f"cancel_{event['id']}"):
+                    cancel_ticket(event["id"], current_user["id"])
+                    st.success("Reservation Cancelled")
+                    st.rerun()
+
+        column_list += 1
+        if column_list > 1:
+            column_list = 0
