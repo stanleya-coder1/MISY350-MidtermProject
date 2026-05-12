@@ -287,7 +287,8 @@ if st.session_state["page"] == "dashboard" and st.session_state["role"] == "Admi
 
 #attendee
 if st.session_state["page"] == "events" and st.session_state["role"] == "Attendee":
-
+    st.metric("Attendee Dashboard")
+    st.divider()
     col1,col2,col3 = st.columns([2,3,2])
 
     st.header("Browse Events")
