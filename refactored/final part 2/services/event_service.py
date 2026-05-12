@@ -4,19 +4,17 @@ from pathlib import Path
 from data.data_manager import (load_data, save_data, events_file)
 
 
-def get_all_events():
-    return load_data(events_file)
+def get_tickets_left(event):
+    return event["tickets"] - len(event.get("reservations", []))
+
+def user_has_ticket(event, user_id):
+    for reservation in event.get("reservations", []):
+        if reservation["user_id"] == user_id:
+            return True
+    return False
 
 
-#admin view events
-def get_events_by_admin(admin_id):
-    events = load_data(events_file)
-    return [
-        event
-        for event in events
-        if event.get("created_by") == admin_id
-    ]
-
+# EVENT MANAGEMENT SYSTEM/ admin CRUD
 #admin CRUD - create (create event)
 def create_event(name, date, time, location, description, tickets, admin_user):
     events = load_data(events_file)
@@ -37,6 +35,20 @@ def create_event(name, date, time, location, description, tickets, admin_user):
 
     events.append(new_event)
     save_data(events_file, events)
+
+
+#admin CRUD - read (get events by admin)
+def get_events_by_admin(admin_id):
+    events = load_data(events_file)
+    return [
+        event
+        for event in events
+        if event.get("created_by") == admin_id
+    ]
+
+def get_all_events():
+    return load_data(events_file)
+
 
 
 #admin CRUD - update (update event)
@@ -60,7 +72,7 @@ def delete_event(event_id):
     save_data(events_file, events)
 
 
-
+# RESERVATION SYSTEM/ attendee CRUD
 #attendee CRUD - create (reserve ticket)
 def reserve_ticket(event_id, user):
     events = load_data(events_file)
@@ -84,15 +96,15 @@ def reserve_ticket(event_id, user):
 
             event["reservations"].append({
                 "user_id": user["id"],
-                "user_name": user["full_name"]
+                "user_name": user["full_name"],
+                "user_email": user["email"]
             })
 
             save_data(events_file, events)
-            
             return "success"
 
 
-#cancel ticket - attendee (CRUD - update/delete)
+#attendee CRUD - delete (cancel reservation)
 def cancel_ticket(event_id, user_id):
     events = load_data(events_file)
 
@@ -103,5 +115,5 @@ def cancel_ticket(event_id, user_id):
                 for reservation in event.get("reservations", [])
                 if reservation["user_id"] != user_id
             ]
-
     save_data(events_file, events)
+
