@@ -28,3 +28,32 @@ def show_attendee_home():
             st.write(event["date"])
             st.write(event["location"])
             st.caption(f"Hosted by {event['created_by_name']}")
+
+
+#atendee CRUD - browse/review events
+def show_browse_events():
+    st.title("Browse Events")
+
+    events = get_all_events()
+    search = st.text_input("Search Events")
+
+    if search:
+        events = [event for event in events if search.lower() in event["name"].lower()]
+
+    cols = st.columns(2)
+    column_list = 0
+
+    for event in events:
+        with cols[column_list]:
+            with st.container(border=True):
+                st.subheader(event["name"])
+                st.write(f"Date: {event['date']}")
+                st.write(f"Time: {event['time']}")
+                st.write(f"Location: {event['location']}")
+                st.caption(f"Hosted by {event['created_by_name']}")
+                st.write(event["description"])
+                st.metric("Tickets Left", get_tickets_left(event))
+                result = None
+
+
+
