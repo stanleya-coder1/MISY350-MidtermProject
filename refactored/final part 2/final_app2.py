@@ -6,3 +6,17 @@ from ui.admin_ui import (show_admin_home, show_create_event, show_manage_my_even
 from ui.sidebar_ui import show_sidebar
 
 st.set_page_config(page_title="Event Manager", layout="wide", initial_sidebar_state="expanded") 
+
+#session state
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if "user" not in st.session_state:
+    st.session_state["user"] = None
+
+if "role" not in st.session_state:
+    st.session_state["role"] = None
+
+if "page" not in st.session_state:
+    st.session_state["page"] = "login"
