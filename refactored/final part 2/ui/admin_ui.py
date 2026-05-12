@@ -50,3 +50,22 @@ def show_create_event():
             create_event(name, date, time, location, description, tickets, st.session_state["user"])
             st.success("Event created")
 
+# admin CRUD - review all events
+def show_browse_all_events():
+    st.title("Browse All Events")
+    events = get_all_events()
+    search = st.text_input("Search Events")
+
+    if search:
+        events = [event for event in events if search.lower() in event["name"].lower()]
+    for event in events:
+        with st.container(border=True):
+            col1, col2 = st.columns([3, 1])
+
+            with col1:
+                st.subheader(event["name"])
+                st.write(f"Date: {event['date']}")
+                st.write(f"Location: {event['location']}")
+                st.caption(f"Hosted by {event['created_by_name']}")
+            with col2:
+                st.metric("Tickets Left", get_tickets_left(event))
