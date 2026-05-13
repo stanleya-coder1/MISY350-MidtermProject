@@ -42,12 +42,6 @@ def show_login_page():
     if st.button("Create Account", use_container_width=True):
         st.session_state["page"] = "login"
         st.rerun()
-
-    st.divider()
-
-    if st.button("Back to Login", use_container_width=True):
-        st.session_state["page"] = "login"
-        st.rerun()
  
 
 
@@ -72,3 +66,9 @@ def show_register_page():
                 else:
                     st.success("Account created")
                     st.session_state["page"] = "login"
+
+                    st.divider()
+
+    if st.button("Back to Login", use_container_width=True):
+        st.session_state["page"] = "login"
+        st.rerun()    
