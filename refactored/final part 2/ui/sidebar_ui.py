@@ -20,6 +20,10 @@ def show_sidebar():
                 st.session_state["page"] = "my_tickets"
                 st.rerun()
 
+            if st.button("AI Assistant", use_container_width=True):
+                st.session_state["page"] = "assistant"
+                st.rerun()
+
         #admin sidebar - turn tabs into seperate pages
         else:
             if st.button("Dashboard", use_container_width=True):
