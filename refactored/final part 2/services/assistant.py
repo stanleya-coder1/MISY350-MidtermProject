@@ -83,8 +83,8 @@ if "messages" not in st.session_state:
 
 
 #fix to tailor to event website 
-events = load_events("ai-assistant"/ai_event.json)
-logs = load_logs("ai-assistant"/ai_logs.json)
+events = load_events("ai-assistant/ai_event.json")
+logs = load_logs("ai-assistant/ai_logs.json")
 
 
 
