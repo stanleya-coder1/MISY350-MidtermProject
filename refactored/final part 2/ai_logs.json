@@ -4,7 +4,7 @@
         "content" : "Hi, how can I help you"
     },
     {
-        "role": "user",
-        "content": "How many orders we have"
+        "role": "attendee",
+        "content": "How many events we have"
     }
 ]
