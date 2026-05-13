@@ -37,7 +37,7 @@ def create_event(name, date, time, location, description, tickets, admin_user):
     save_data(events_file, events)
 
 
-#admin CRUD - read (get events by admin)
+#admin CRUD - read (get events by admin/user)
 def get_events_by_admin(admin_id):
     events = load_data(events_file)
     return [
