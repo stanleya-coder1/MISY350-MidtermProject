@@ -53,7 +53,7 @@ def get_ai_response(client:OpenAI, chat_history: list, context_hint:str):
 
 
 # data layer
-def load_orders(filepath: str):
+def load_events(filepath: str):
     json_path = Path(filepath) 
     if json_path.exists():
         with open(json_path, "r") as f:
@@ -83,7 +83,7 @@ if "messages" not in st.session_state:
 
 
 #fix to tailor to event website 
-orders = load_orders("ai-assistant"/ai_orders.json)
+events = load_events("ai-assistant"/ai_event.json)
 logs = load_logs("ai-assistant"/ai_logs.json)
 
 
