@@ -3,7 +3,7 @@ from services.event_service import (get_all_events, reserve_ticket, cancel_ticke
 
 # attendee dahsboard/home
 def show_attendee_home():
-    st.title("Attendee Home")
+    st.title("Attendee Dashboard")
     st.divider()
 
     events = get_all_events()
@@ -55,7 +55,7 @@ def show_browse_events():
                 st.metric("Tickets Left", get_tickets_left(event))
                 result = None
 
-            #CRUD crearete reservation
+            #CRUD create reservation
                 if st.button("Reserve Ticket", key=event["id"]):
                     result = reserve_ticket(event["id"], st.session_state["user"])
                 if result == "success":

@@ -1,7 +1,6 @@
 import streamlit as st
 
 
-
 def show_sidebar():
     with st.sidebar:
         st.title("Event Manager")
@@ -9,8 +8,7 @@ def show_sidebar():
         st.caption(f"Role: {st.session_state["role"]}")
         st.divider()
         if st.session_state["role"] == "Attendee":
-
-            if st.button("Home", use_container_width=True):
+            if st.button("Dashboard", use_container_width=True):
                 st.session_state["page"] = "attendee_home"
                 st.rerun()
 
