@@ -125,30 +125,23 @@ def show_event_help():
     if st.button("What events are currently available?"):
         if not events:
             st.info("There are currently no events available.")
-
         else:
             for event in events:
                 with st.container(border=True):
                     st.subheader(event["name"])
                     st.write(f"Date: {event['date']}")
                     st.write(f"Location: {event['location']}")
-
     # Question 2
     if st.button("How many total events are available?"):
         st.success(f"There are currently {total_events} events available.")
-
     # Question 3
     if st.button("How many tickets are left across all events?"):
         st.success(f"There are {total_tickets_left} tickets remaining across all events.")
-
     # Question 4
     if st.button("How do I reserve a ticket?"):
         st.info(
-            "Go to the Browse Events page and click the 'Reserve Ticket' button."
-        )
-
+            "Go to the Browse Events page and click the 'Reserve Ticket' button.")
     # Question 5
     if st.button("How do I cancel my reservation?"):
         st.info(
-            "Go to the My Tickets page and click 'Cancel Reservation'."
-        )
+            "Go to the My Tickets page and click 'Cancel Reservation'.")
