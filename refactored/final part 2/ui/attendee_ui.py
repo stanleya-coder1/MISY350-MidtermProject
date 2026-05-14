@@ -114,11 +114,9 @@ def show_event_help():
     st.divider()
     events = get_all_events()
     total_events = len(events)
-    total_tickets_left = 0
 
-    for event in events:
-        total_tickets_left += get_tickets_left(event)
-
+    st.error("Open AI Key Not Active")
+    st.divider()
     st.subheader("Frequently Asked Questions")
 
     # Question 1
@@ -135,8 +133,8 @@ def show_event_help():
     if st.button("How many total events are available?"):
         st.success(f"There are currently {total_events} events available.")
     # Question 3
-    if st.button("How many tickets are left across all events?"):
-        st.success(f"There are {total_tickets_left} tickets remaining across all events.")
+    if st.button("How do I know who is hosting the event?"):
+        st.info("When you look at ticket reservations, it will tell you who is the host for the event selected.")
     # Question 4
     if st.button("How do I reserve a ticket?"):
         st.info(
