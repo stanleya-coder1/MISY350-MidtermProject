@@ -1,6 +1,6 @@
 import streamlit as st
 
-from services.event_service import (get_all_events, get_events_by_admin, create_event, update_event, delete_event, get_tickets_left)
+from services.event_service import (get_all_events, get_events_by_admin, create_event, update_event, delete_event, get_tickets_left, get_event_status)
 
 #admin dashboard
 def show_admin_home():
@@ -75,6 +75,9 @@ def show_manage_my_events():
     st.title("Manage My Events")
     events = get_events_by_admin(st.session_state.user["id"])
 
+    status = get_event_status(event)
+    st.info(f"Status: {status}")
+
     if not events:
         st.info("No events created yet")
         return
@@ -82,6 +85,7 @@ def show_manage_my_events():
     for event in events:
         with st.container(border=True):
             st.subheader(event["name"])
+            st.info(f"Status: {event.get('status', 'Upcoming')}")
             col1, col2 = st.columns(2)
 
             with col1:
@@ -102,8 +106,8 @@ def show_manage_my_events():
                     st.rerun()
 
             with button_col2:
-                if st.button("Delete Event", key=f"delete_{event['id']}", use_container_width=True):
+                if st.button("Cancel Event", key=f"delete_{event['id']}", use_container_width=True):
                     delete_event(event["id"])
-                    st.success("Event Deleted")
+                    st.success("Event Cancelled")
                     st.rerun()
 
