@@ -5,7 +5,7 @@ def show_sidebar():
     with st.sidebar:
         st.title("Event Manager")
         st.success(f"Logged in as: {st.session_state.user['full_name']}")
-        st.caption(f"Role: {st.session_state["role"]}")
+        st.caption(f"Role: {st.session_state['role']}")
         st.divider()
         if st.session_state["role"] == "Attendee":
             if st.button("Dashboard", use_container_width=True):

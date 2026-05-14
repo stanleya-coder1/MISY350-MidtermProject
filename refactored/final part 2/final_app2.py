@@ -1,7 +1,10 @@
 import streamlit as st
+#dotenv
+
+
 
 from ui.login_ui import show_login_page, show_register_page
-from ui.attendee_ui import (show_attendee_home, show_browse_events, show_my_tickets)
+from ui.attendee_ui import (show_attendee_home, show_browse_events, show_my_tickets, show_event_help)
 from ui.admin_ui import (show_admin_home, show_create_event, show_manage_my_events, show_browse_all_events)
 from ui.sidebar_ui import show_sidebar
 
@@ -41,6 +44,9 @@ elif page == "browse_events":
 
 elif page == "my_tickets":
     show_my_tickets()
+
+elif page == "assistant":
+    show_event_help()
 
 # admin pages
 elif page == "admin_home":

@@ -1,4 +1,5 @@
 import streamlit as st
+
 from services.event_service import (get_all_events, reserve_ticket, cancel_ticket, get_tickets_left, user_has_ticket)
 
 # attendee dahsboard/home
@@ -105,3 +106,49 @@ def show_my_tickets():
         column_list += 1
         if column_list > 1:
             column_list = 0
+
+
+# AI Help / FAQ Section
+def show_event_help():
+    st.title("Event Help Center")
+    st.divider()
+    events = get_all_events()
+    total_events = len(events)
+    total_tickets_left = 0
+
+    for event in events:
+        total_tickets_left += get_tickets_left(event)
+
+    st.subheader("Frequently Asked Questions")
+
+    # Question 1
+    if st.button("What events are currently available?"):
+        if not events:
+            st.info("There are currently no events available.")
+
+        else:
+            for event in events:
+                with st.container(border=True):
+                    st.subheader(event["name"])
+                    st.write(f"Date: {event['date']}")
+                    st.write(f"Location: {event['location']}")
+
+    # Question 2
+    if st.button("How many total events are available?"):
+        st.success(f"There are currently {total_events} events available.")
+
+    # Question 3
+    if st.button("How many tickets are left?"):
+        st.success(f"There are {total_tickets_left} tickets remaining across all events.")
+
+    # Question 4
+    if st.button("How do I reserve a ticket?"):
+        st.info(
+            "Go to the Browse Events page and click the 'Reserve Ticket' button."
+        )
+
+    # Question 5
+    if st.button("How do I cancel my reservation?"):
+        st.info(
+            "Go to the My Tickets page and click 'Cancel Reservation'."
+        )
