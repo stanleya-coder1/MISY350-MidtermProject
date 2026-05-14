@@ -75,15 +75,14 @@ def show_manage_my_events():
     st.title("Manage My Events")
     events = get_events_by_admin(st.session_state.user["id"])
 
-    status = get_event_status(event)
-    st.info(f"Status: {status}")
-
     if not events:
         st.info("No events created yet")
         return
 
     for event in events:
         with st.container(border=True):
+            status = get_event_status(event)
+            st.info(f"Status: {status}")
             st.subheader(event["name"])
             st.info(f"Status: {event.get('status', 'Upcoming')}")
             col1, col2 = st.columns(2)
