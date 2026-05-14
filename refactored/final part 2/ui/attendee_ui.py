@@ -1,6 +1,6 @@
 import streamlit as st
 
-from services.event_service import (get_all_events, reserve_ticket, cancel_ticket, get_tickets_left, user_has_ticket)
+from services.event_service import (get_all_events, reserve_ticket, cancel_ticket, get_tickets_left, user_has_ticket, get_reservation_status)
 
 # attendee dahsboard/home
 def show_attendee_home():
@@ -76,11 +76,10 @@ def show_my_tickets():
     st.title("My Tickets")
     current_user = st.session_state["user"]
     events = get_all_events()
-    user_events = []
-
-    for event in events:
-        if user_has_ticket(event, current_user["id"]):
-            user_events.append(event)
+    user_events = [
+        event for event in events
+        if user_has_ticket(event, current_user["id"])
+    ]
 
     if not user_events:
         st.info("No reservations yet")
@@ -89,6 +88,8 @@ def show_my_tickets():
     cols = st.columns(2)
     column_list = 0
     for event in user_events:
+        status = get_reservation_status(event, current_user["id"])
+
         with cols[column_list]:
             with st.container(border=True):
                 st.subheader(event["name"])
@@ -96,12 +97,22 @@ def show_my_tickets():
                 st.write(event["time"])
                 st.write(event["location"])
                 st.caption(f"Hosted by {event['created_by_name']}")
-                st.success("Reservation Confirmed")
 
-                if st.button("Cancel Reservation", key=f"cancel_{event['id']}"):
-                    cancel_ticket(event["id"], current_user["id"])
-                    st.success("Reservation Cancelled")
-                    st.rerun()
+                #status button
+                if status == "Reserved":
+                    st.success("Reserved")
+                elif status == "Past":
+                    st.info("Past")
+                elif status == "Cancelled":
+                    st.error("Cancelled")
+                elif status == "Cancelled Event":
+                    st.error("Event Cancelled")
+
+                if status == "Reserved":
+                    if st.button("Cancel Reservation", key=f"cancel_{event['id']}"):
+                        cancel_ticket(event["id"], current_user["id"])
+                        st.success("Reservation Cancelled")
+                        st.rerun()
 
         column_list += 1
         if column_list > 1:
