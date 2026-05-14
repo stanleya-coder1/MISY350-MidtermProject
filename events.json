@@ -1,16 +1,23 @@
 [
     {
         "id": "4d80c37e-9165-4c69-8ba2-820257a08778",
-        "name": "Graduation Commencement",
+        "name": "Graduation Commencements",
         "date": "2026-05-23",
         "time": "08:00:00",
         "location": "Bob Carpenter Center",
         "description": "Commencement/Graduation for 2026 graduates",
-        "tickets": 1300,
+        "tickets": 1303,
         "created_by": "1",
         "created_by_name": "System Admin",
         "status": "Upcoming",
-        "reservations": []
+        "reservations": [
+            {
+                "user_id": "b69a8d76-4c82-4023-9b45-11e52c46a4b9",
+                "user_name": "New Attendee",
+                "user_email": "attendee@test.com",
+                "status": "Reserved"
+            }
+        ]
     },
     {
         "id": "4d80c37e-9165-4c69-8ba2-820257a08779",
@@ -27,7 +34,8 @@
             {
                 "user_id": "b69a8d76-4c82-4023-9b45-11e52c46a4b9",
                 "user_name": "New Attendee",
-                "user_email": "attendee@test.com"
+                "user_email": "attendee@test.com",
+                "status": "Reserved"
             }
         ]
     },
@@ -42,7 +50,14 @@
         "created_by": "1",
         "created_by_name": "System Admin",
         "status": "Upcoming",
-        "reservations": []
+        "reservations": [
+            {
+                "user_id": "b69a8d76-4c82-4023-9b45-11e52c46a4b9",
+                "user_name": "New Attendee",
+                "user_email": "attendee@test.com",
+                "status": "Cancelled"
+            }
+        ]
     },
     {
         "id": "10556df0-9819-4f92-b911-28f9904aee8e",
@@ -68,6 +83,46 @@
         "created_by": "1",
         "created_by_name": "System Admin",
         "status": "Upcoming",
+        "reservations": [
+            {
+                "user_id": "b69a8d76-4c82-4023-9b45-11e52c46a4b9",
+                "user_name": "New Attendee",
+                "user_email": "attendee@test.com",
+                "status": "Cancelled"
+            }
+        ]
+    },
+    {
+        "id": "a297451b-82c6-4e19-b42c-ae24e314b05e",
+        "name": "Retirement party",
+        "date": "2026-05-14",
+        "time": "23:30:00",
+        "location": "Gore hall",
+        "description": "Retirement party for elderly",
+        "tickets": 51,
+        "created_by": "1",
+        "created_by_name": "System Admin",
+        "status": "Cancelled",
         "reservations": []
+    },
+    {
+        "id": "351a1754-2c84-486b-95e5-fa3b3efb7c63",
+        "name": "Retirement party part 2",
+        "date": "2026-05-18",
+        "time": "01:45:00",
+        "location": "purnell",
+        "description": "retiring",
+        "tickets": 50,
+        "created_by": "1",
+        "created_by_name": "System Admin",
+        "status": "Upcoming",
+        "reservations": [
+            {
+                "user_id": "b69a8d76-4c82-4023-9b45-11e52c46a4b9",
+                "user_name": "New Attendee",
+                "user_email": "attendee@test.com",
+                "status": "Reserved"
+            }
+        ]
     }
 ]

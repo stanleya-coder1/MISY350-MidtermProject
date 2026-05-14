@@ -64,8 +64,8 @@ def show_browse_events():
             #CRUD create reservation
                 if st.button("Reserve Ticket", key=event["id"]):
                     result = reserve_ticket(event["id"], st.session_state["user"])
-                if result == "success":
-                    st.success("Ticket Reserved")
+                    if result == "success":
+                        st.success("Ticket Reserved")
                 elif result == "sold_out":
                     st.error("Sold Out")
                 elif result == "already_reserved":
