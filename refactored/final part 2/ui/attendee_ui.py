@@ -52,6 +52,11 @@ def show_browse_events():
                 st.write(f"Time: {event['time']}")
                 st.write(f"Location: {event['location']}")
                 st.caption(f"Hosted by {event['created_by_name']}")
+                event_status = event.get("status", "Upcoming")
+                if event_status == "Cancelled":
+                    st.error("Event Cancelled")
+                elif event_status == "Upcoming":
+                    st.success("Upcoming")
                 st.write(event["description"])
                 st.metric("Tickets Left", get_tickets_left(event))
                 result = None
