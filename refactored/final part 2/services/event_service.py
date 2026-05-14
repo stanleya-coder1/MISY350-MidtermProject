@@ -37,13 +37,13 @@ def get_event_status(event):
 def get_reservation_status(event, user_id):
     for reservation in event.get("reservations", []):
         if reservation["user_id"] == user_id:
-            # User canceled
+            #user canceled ticket
             if reservation.get("status") == "Cancelled":
                 return "Cancelled"
-            # Event canceled
+            #admin canceled event
             if event.get("status") == "Cancelled":
                 return "Cancelled Event"
-            # Past
+            #past event
             if get_event_status(event) == "Past":
                 return "Past"
             return "Reserved"
@@ -51,6 +51,8 @@ def get_reservation_status(event, user_id):
 
 
 def get_tickets_left(event):
+    active_reservations = [r for r in event.get("reservations", [])
+        if r.get("status", "Reserved") == "Reserved"]
     return event["tickets"] - len(event.get("reservations", []))
 
 def user_has_ticket(event, user_id):
