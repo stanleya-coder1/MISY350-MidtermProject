@@ -108,9 +108,9 @@ def show_my_tickets():
             column_list = 0
 
 
-# AI Help / FAQ Section
+# AI / FAQ Section
 def show_event_help():
-    st.title("Event Help Center")
+    st.title("Event Help Chatbot Assistant")
     st.divider()
     events = get_all_events()
     total_events = len(events)
@@ -138,7 +138,7 @@ def show_event_help():
         st.success(f"There are currently {total_events} events available.")
 
     # Question 3
-    if st.button("How many tickets are left?"):
+    if st.button("How many tickets are left across all events?"):
         st.success(f"There are {total_tickets_left} tickets remaining across all events.")
 
     # Question 4
