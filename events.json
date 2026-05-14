@@ -56,5 +56,18 @@
         "created_by_name": "System Admin",
         "status": "Upcoming",
         "reservations": []
+    },
+    {
+        "id": "3df7f3ad-c785-4d47-aa6b-de204eca07ce",
+        "name": "Senior Bar Crawl",
+        "date": "2026-05-16",
+        "time": "20:30:00",
+        "location": "Homegrown",
+        "description": "Senior bar crawl for 2026 UD grads",
+        "tickets": 81,
+        "created_by": "1",
+        "created_by_name": "System Admin",
+        "status": "Upcoming",
+        "reservations": []
     }
 ]

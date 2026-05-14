@@ -1,7 +1,53 @@
 #for events
 import uuid
 from pathlib import Path
+from datetime import datetime
 from data.data_manager import (load_data, save_data, events_file)
+
+def structured_event_date(event): #need to determine if event is past
+    date_str = str(event.get("date", "")).strip()
+    #mm-dd-yyyy
+    if len(date_str) == 10 and date_str[4] == "-" and date_str[7] == "-":
+        parts = date_str.split("-")
+        if len(parts) == 3:
+            year = int(parts[0])
+            month = int(parts[1])
+            day = int(parts[2])
+            return datetime(year, month, day).date()
+
+    elif "-" in date_str:
+        parts = date_str.split("-")
+        if len(parts) == 3:
+            month = int(parts[0])
+            day = int(parts[1])
+            year = int(parts[2])
+            return datetime(year, month, day).date()
+    return None
+
+
+def get_event_status(event):
+    if event.get("status") == "Cancelled":
+        return "Cancelled"
+    event_date = structured_event_date(event)
+    if event_date and event_date < datetime.today().date():
+        return "Past"
+    return "Upcoming"
+
+
+def get_reservation_status(event, user_id):
+    for reservation in event.get("reservations", []):
+        if reservation["user_id"] == user_id:
+            # User canceled
+            if reservation.get("status") == "Cancelled":
+                return "Cancelled"
+            # Event canceled
+            if event.get("status") == "Cancelled":
+                return "Cancelled Event"
+            # Past
+            if get_event_status(event) == "Past":
+                return "Past"
+            return "Reserved"
+    return None
 
 
 def get_tickets_left(event):
