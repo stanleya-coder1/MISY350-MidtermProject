@@ -115,7 +115,7 @@ def delete_event(event_id):
     for event in events:
         if event["id"] == event_id:
             event["status"] = "Cancelled"
-            
+
     save_data(events_file, events)
 
 
@@ -126,6 +126,8 @@ def reserve_ticket(event_id, user):
 
     for event in events:
         if event["id"] == event_id:
+            if event.get("status") == "Cancelled":
+                return "event_cancelled"
             if "reservations" not in event:
                 event["reservations"] = []
 
@@ -133,12 +135,16 @@ def reserve_ticket(event_id, user):
 
             for reservation in event["reservations"]:
                 if reservation["user_id"] == user["id"]:
+                    if reservation.get("status") == "Cancelled":
+                        reservation["status"] = "Reserved"
+                        save_data(events_file, events)
+                        return "success"
                     already_reserved = True
 
             if already_reserved:
-                return "already_reserved"
+                return "already reserved"
 
-            if len(event["reservations"]) >= event["tickets"]:
+            if get_tickets_left(event) <= 0:
                 return "sold_out"
 
             event["reservations"].append({
@@ -157,10 +163,9 @@ def cancel_ticket(event_id, user_id):
 
     for event in events:
         if event["id"] == event_id:
-            event["reservations"] = [
-                reservation
-                for reservation in event.get("reservations", [])
-                if reservation["user_id"] != user_id
-            ]
+            for reservation in event.get("reservations", []):
+                if reservation["user_id"] == user_id:
+                    reservation["status"] = "Cancelled"
+
     save_data(events_file, events)
 
