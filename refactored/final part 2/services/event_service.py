@@ -88,11 +88,7 @@ def create_event(name, date, time, location, description, tickets, admin_user):
 #admin CRUD - read (get events by admin/user)
 def get_events_by_admin(admin_id):
     events = load_data(events_file)
-    return [
-        event
-        for event in events
-        if event.get("created_by") == admin_id
-    ]
+    return [event for event in events if event.get("created_by") == admin_id]
 
 def get_all_events():
     return load_data(events_file)
@@ -116,7 +112,10 @@ def update_event(event_id, updated_name, updated_tickets, updated_location, upda
 #admin CRUD - delete (delete event)
 def delete_event(event_id):
     events = load_data(events_file)
-    events = [event for event in events if event["id"] != event_id]
+    for event in events:
+        if event["id"] == event_id:
+            event["status"] = "Cancelled"
+            
     save_data(events_file, events)
 
 
